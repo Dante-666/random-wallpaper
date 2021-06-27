@@ -1,9 +1,13 @@
+#pragma once
+
 #include <curl/curl.h>
 #include <stdlib.h>
 
 #include <cstring>
 #include <memory>
 #include <string>
+
+#include "logutil/logger.h"
 
 using std::string;
 

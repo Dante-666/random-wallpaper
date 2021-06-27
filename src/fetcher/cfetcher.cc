@@ -1,6 +1,4 @@
 #include "cfetcher.h"
-// TODO: port this to a basic logger #5
-#include <iostream>
 
 MemChunk::MemChunk() {
   this->memory = static_cast<char *>(malloc(1));
@@ -25,7 +23,7 @@ size_t MemChunk::write_callback(char *buffer, size_t size, size_t nitems,
     memChunk->memory[memChunk->size] = 0;
     return realsize;
   } else {
-    std::cerr << "Not enough memory" << std::endl;
+		LogError("Not enough memory!");
     return 0;
   }
 }
@@ -40,6 +38,7 @@ string CurlFetcher::fetchResource(const string &uri) {
   curl_handle = curl_easy_init();
 
   if (curl_handle) {
+		LogOutput("Handle Initialized...");
     std::unique_ptr<MemChunk> chunk = std::make_unique<MemChunk>();
     curl_easy_setopt(curl_handle, CURLOPT_URL, uri.c_str());
     curl_easy_setopt(curl_handle, CURLOPT_WRITEFUNCTION,
@@ -53,8 +52,9 @@ string CurlFetcher::fetchResource(const string &uri) {
     if (retVal == CURLcode::CURLE_OK) {
 			return chunk->get_string();
     } else {
-      std::cerr << curl_easy_strerror(retVal) << std::endl;
+			LogError(curl_easy_strerror(retVal));
     }
   }
+	LogError("Couldn't obtain handle...");
 	return string();
 }

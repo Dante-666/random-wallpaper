@@ -1,21 +1,22 @@
 workspace "random-wallpaper"
-    configurations { "Debug", "Release" }
+  configurations { "Debug", "Release" }
 
 project "random-wallpaper"
-    kind "ConsoleApp"
-    language "C++"
-    location "build"
+  kind "ConsoleApp"
+  language "C++"
+  location "build"
 
-    files { "src/**.h", "src/**.cc" }
+	includedirs { "src" }
+
+  files { "src/**.h", "src/**.cc" }
     
-    links { "curl" }
+  links { "curl" }
 
-    filter "configurations:Debug"
-	defines { "DEBUG" }
-	symbols "On"
+  filter "configurations:Debug"
+		defines { "DEBUG" }
+		symbols "On"
 
-    filter "configurations:Release"
-	defines { "NDEBUG" }
-	optimize "On"
-
+  filter "configurations:Release"
+		defines { "NDEBUG" }
+		optimize "On"
 

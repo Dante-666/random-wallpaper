@@ -34,6 +34,7 @@
 # Build
 build/
 Makefile
+compile_commands.json
 
 # Completer
 .ccls-cache/

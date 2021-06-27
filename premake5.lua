@@ -6,7 +6,9 @@ project "random-wallpaper"
     language "C++"
     location "build"
 
-    files { "src/*.h", "src/*.cc" }
+    files { "src/**.h", "src/**.cc" }
+    
+    links { "curl" }
 
     filter "configurations:Debug"
 	defines { "DEBUG" }
@@ -15,3 +17,5 @@ project "random-wallpaper"
     filter "configurations:Release"
 	defines { "NDEBUG" }
 	optimize "On"
+
+

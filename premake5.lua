@@ -5,8 +5,9 @@ project "random-wallpaper"
   kind "ConsoleApp"
   language "C++"
   location "build"
+	cppdialect "C++17"
 
-	includedirs { "src" }
+	includedirs { "src", "external/rapidxml-1.13" }
 
   files { "src/**.h", "src/**.cc" }
     

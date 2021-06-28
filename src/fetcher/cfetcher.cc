@@ -23,22 +23,26 @@ size_t MemChunk::write_callback(char *buffer, size_t size, size_t nitems,
     memChunk->memory[memChunk->size] = 0;
     return realsize;
   } else {
-		LogError("Not enough memory!");
+    LogError("Not enough memory!");
     return 0;
   }
 }
 
-string MemChunk::get_string() {
-	return string(this->memory);
+stringstream MemChunk::get_string() {
+  if (this->size) {
+    stringstream stream{this->memory};
+    return stream;
+  } else
+    return {};
 }
 
-string CurlFetcher::fetchResource(const string &uri) {
+stringstream CurlFetcher::fetchResource(const string &uri) {
   CURL *curl_handle;
   CURLcode retVal;
   curl_handle = curl_easy_init();
 
   if (curl_handle) {
-		LogOutput("Handle Initialized...");
+    LogOutput("Handle Initialized...");
     std::unique_ptr<MemChunk> chunk = std::make_unique<MemChunk>();
     curl_easy_setopt(curl_handle, CURLOPT_URL, uri.c_str());
     curl_easy_setopt(curl_handle, CURLOPT_WRITEFUNCTION,
@@ -50,11 +54,11 @@ string CurlFetcher::fetchResource(const string &uri) {
     curl_easy_cleanup(curl_handle);
 
     if (retVal == CURLcode::CURLE_OK) {
-			return chunk->get_string();
+      return chunk->get_string();
     } else {
-			LogError(curl_easy_strerror(retVal));
+      LogError(curl_easy_strerror(retVal));
     }
   }
-	LogError("Couldn't obtain handle...");
-	return string();
+  LogError("Couldn't obtain handle...");
+  return {};
 }

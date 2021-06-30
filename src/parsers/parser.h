@@ -1,14 +1,17 @@
 #pragma once
 #include <string>
+#include <sstream>
 #include <vector>
 
-using std::ostream;
+#include "logutil/logger.h"
+
+using std::stringstream;
 using std::string;
 using std::vector;
 
 class Parser {
 public:
-  virtual ~Parser() = 0;
-  virtual vector<string> parseStream(const ostream &stream) = 0;
+  virtual ~Parser() {};
+  virtual vector<string> parseStream(const stringstream &stream) = 0;
 };
 

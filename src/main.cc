@@ -1,8 +1,9 @@
+#include "container/container.h"
 #include "fetcher/cfetcher.h"
 #include "parsers/xmlparser.h"
 
-
 int main() {
+	//TODO: Add these and other URI sources in *.conf
   string uri = "https://www.reddit.com/r/Animewallpaper/"
                "search.rss?q=flair_name%3A%22Desktop%22&restrict_sr=1";
   auto out = CurlFetcher::fetchResource(uri);
@@ -12,15 +13,18 @@ int main() {
 
 	auto list = parser->parseStream(out);
 
-	//TODO: remove this and keep lists in common container with pop mechanism
-	std::srand(time(nullptr));
-	auto img = list[std::rand() % list.size()];
-
-	stringstream command;
-	command << "feh --bg-fill " << img;
+	Container container;
+	container.append(list);
+	container.randomize();
 
 	//TODO: encapsulate into OS specific commands
+	stringstream command;
+	auto str = container.popURI();
+	command << "feh --bg-fill " << str;
+
 	std::system(command.str().c_str());
+
+	LogOutput("Exiting...");
 
   return 0;
 }

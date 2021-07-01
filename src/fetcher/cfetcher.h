@@ -5,11 +5,11 @@
 
 #include <cstring>
 #include <memory>
-#include <string>
+#include <sstream>
 
 #include "logutil/logger.h"
 
-using std::string;
+using std::stringstream;
 
 // TODO #6 unit tests
 class MemChunk {
@@ -21,9 +21,9 @@ public:
   ~MemChunk();
   static size_t write_callback(char *buffer, size_t size, size_t nitems,
                                void *outstream);
-  string get_string();
+  stringstream get_string();
 };
 
 struct CurlFetcher {
-  static string fetchResource(const string &uri);
+  static stringstream fetchResource(const string &uri);
 };

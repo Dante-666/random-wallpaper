@@ -1,5 +1,6 @@
 #include "container/container.h"
 #include "fetcher/cfetcher.h"
+#include "os/interface.h"
 #include "parsers/xmlparser.h"
 
 int main() {
@@ -17,12 +18,7 @@ int main() {
 	container.append(list);
 	container.randomize();
 
-	//TODO: encapsulate into OS specific commands
-	stringstream command;
-	auto str = container.popURI();
-	command << "feh --bg-fill " << str;
-
-	std::system(command.str().c_str());
+	OSUtils::updateWallpaper(container.popURI());
 
 	LogOutput("Exiting...");
 

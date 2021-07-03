@@ -6,10 +6,12 @@ UtilImpl &OSUtils::_impl = *(new Linux());
 
 Linux::~Linux() {};
 
-vector<string> Linux::fetchFiles(const char *dir) {}
+vector<string> Linux::fetchFiles(const char *dir) {
+	return {};
+}
 
 int Linux::systemCall(const char *command) {
-	std::system(command);
+	return std::system(command);
 }
 
 void Linux::updateWallpaper(const string& uri) {

@@ -45,7 +45,7 @@ class Linux : public UtilImpl {
 };
 
 class Windows : public UtilImpl {
-  static const char* tmpDownload;
+  static const char* tmpLocation;
 	virtual ~Windows() override;
   virtual vector<string> fetchFiles(const char *dir) override;
   virtual int systemCall(const char *command) override;

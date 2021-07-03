@@ -1,7 +1,7 @@
 #include "xmlparser.h"
 #include <memory>
 
-XMLParser::XMLParser() : //_re("<span><a href=\"()\"") {};
+XMLParser::XMLParser() : 
 _re("<span>\\s?<a\\s+href=\"(.*.(jpg|png|jpeg))\"", std::regex::ECMAScript) {};
 
 XMLParser::~XMLParser() {}

@@ -24,6 +24,8 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
+      - name: set up premake and add to path
+        uses: abel0b/setup-premake@v1
       - name: configure
         run: premake5 gmake2
       - name: build

@@ -1,12 +1,19 @@
 #pragma once
 
+#include "logutil/logger.h"
+
+#include <fstream>
+#include <memory>
 #include <string>
 #include <sstream>
 #include <vector>
 
+using std::make_unique;
+using std::ofstream;
 using std::string;
 using std::stringstream;
 using std::vector;
+using std::unique_ptr;
 
 class UtilImpl {
 public:
@@ -38,8 +45,10 @@ class Linux : public UtilImpl {
 };
 
 class Windows : public UtilImpl {
+  static const char* tmpDownload;
 	virtual ~Windows() override;
   virtual vector<string> fetchFiles(const char *dir) override;
   virtual int systemCall(const char *command) override;
 	virtual void updateWallpaper(const string& uri) override;
+  static size_t write_callback(char* buffer, size_t size, size_t nitems, ofstream* outstream);
 };

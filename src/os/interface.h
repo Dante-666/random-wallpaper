@@ -36,3 +36,10 @@ class Linux : public UtilImpl {
   virtual int systemCall(const char *command) override;
 	virtual void updateWallpaper(const string& uri) override;
 };
+
+class Windows : public UtilImpl {
+	virtual ~Windows() override;
+  virtual vector<string> fetchFiles(const char *dir) override;
+  virtual int systemCall(const char *command) override;
+	virtual void updateWallpaper(const string& uri) override;
+};

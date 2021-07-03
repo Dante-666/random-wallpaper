@@ -6,6 +6,8 @@ project "random-wallpaper"
   language "C++"
   location "build"
 	cppdialect "C++17"
+	-- TODO: add 32 bit support later
+	architecture "x64"
 
 	includedirs { "src", "external/tinyxml" }
 
@@ -22,11 +24,15 @@ project "random-wallpaper"
 	-- goto winbuild and run nmake /f Makefile.vc mode=static MACHINE=x64 ENABLE_UNICODE=yes
 	-- follow CURL documentation for more
 	filter "system:windows"
-	includedirs {"external/curl/builds/libcurl*/include"}
+		includedirs {"external/curl/builds/libcurl*/include"}
+		libdirs { "external/curl/builds/libcurl*/lib" }
+		links { "libcurl_a.lib" , "wldap32.lib", "Crypt32.lib" , "ws2_32.lib", "winmm.lib", "Normaliz.lib" }
+		ignoredefaultlibraries { "MSVCRT" }
+		buildoptions { "-DCURL_STATICLIB"}
 	filter {}
 	-- link dynamically from system package manager
 	filter "system:linux or system:macosx"
-  links { "curl" }
+  	links { "curl" }
 	filter {}
 
   filter "configurations:Debug"
@@ -37,4 +43,3 @@ project "random-wallpaper"
   filter "configurations:Release"
 		defines { "NDEBUG" }
 		optimize "On"
-

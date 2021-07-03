@@ -38,3 +38,7 @@ compile_commands.json
 
 # Completer
 .ccls-cache/
+
+# vscode
+.vscode/
+*.sln

@@ -1,6 +1,7 @@
 # random-wallpaper
 
-![Build](https://github.com/github/docs/actions/workflows/main.yml/badge.svg)
+[![Action Status](https://github.com/Dante-666/random-wallpaper/workflows/build/badge.svg)](https://github.com/Dante-666/random-wallpaper/actions)
+
 
 Cycle through wallpapers from configurable source(s)
 

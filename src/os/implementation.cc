@@ -1,5 +1,7 @@
 #include "interface.h"
 
+const char* Windows::tmpLocation = "D:/test";
+
 // GCC
 #ifdef __linux__
 UtilImpl &OSUtils::_impl = *(new Linux());
@@ -7,7 +9,6 @@ UtilImpl &OSUtils::_impl = *(new Linux());
 
 // MSVC
 #if defined _WIN64 || defined _WIN32
-const char* Windows::tmpLocation = "D:/test";
 UtilImpl &OSUtils::_impl = *(new Windows());
 #endif
 

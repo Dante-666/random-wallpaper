@@ -56,9 +56,43 @@ stringstream CurlFetcher::fetchResource(const string &uri) {
     if (retVal == CURLcode::CURLE_OK) {
       return chunk->get_string();
     } else {
+			//TODO: error handling
       LogError(curl_easy_strerror(retVal));
     }
   }
+  //TODO: error handling
   LogError("Couldn't obtain handle...");
   return {};
+}
+
+void CurlFetcher::writeImageToDisk(const string &uri, const string& file) {
+  CURL *curl_handle;
+  CURLcode retVal;
+  curl_handle = curl_easy_init();
+
+  if (curl_handle) {
+    LogOutput("Handle Initialized...");
+		unique_ptr<ofstream> outfile = make_unique<ofstream>(file, std::ios_base::binary);
+    curl_easy_setopt(curl_handle, CURLOPT_URL, uri.c_str());
+    curl_easy_setopt(curl_handle, CURLOPT_WRITEFUNCTION, +[] (char *buffer, size_t size, size_t nitems, ofstream *outstream) -> size_t {
+    //TODO: error handling
+    outstream->write(buffer, nitems);
+    return nitems;
+    });
+    curl_easy_setopt(curl_handle, CURLOPT_WRITEDATA, outfile.get());
+
+    retVal = curl_easy_perform(curl_handle);
+
+    curl_easy_cleanup(curl_handle);
+
+    if (retVal == CURLcode::CURLE_OK) {
+			outfile->close();
+    } else {
+			//TODO: error handling
+      LogError(curl_easy_strerror(retVal));
+    }
+  } else {
+    //TODO: error handling
+    LogError("Couldn't obtain handle...");
+  }
 }

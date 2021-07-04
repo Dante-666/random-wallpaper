@@ -34,3 +34,26 @@ jobs:
         run: premake5 gmake2
       - name: build
         run: make config=release -j
+    
+    # This is for windows
+    runs-on: windows-2019
+
+    # Specific steps
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: recursive
+      - name: set up premake and add to path
+        uses: abel0b/setup-premake@v1
+      - name: build curl
+        shell: cmd
+        run: |
+          call vcvarsall.bat
+          cd external\curl
+          call buildconf.bat
+          cd winbuild
+          nmake /f Makefile.vc mode=static MACHINE=x64 ENABLE_UNICODE=yes
+      - name: configure
+        run: premake5 vs2019
+      - name: build
+        run: msbuild -m build/random-wallpaper.vcxproj

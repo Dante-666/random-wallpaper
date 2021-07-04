@@ -26,8 +26,7 @@ project "random-wallpaper"
 	filter "system:windows"
 		includedirs {"external/curl/builds/libcurl*/include"}
 		libdirs { "external/curl/builds/libcurl*/lib" }
-		links { "libcurl_a.lib" , "wldap32.lib", "Crypt32.lib" , "ws2_32.lib", "winmm.lib", "Normaliz.lib" }
-		ignoredefaultlibraries { "MSVCRT" }
+		links { "libcurl_a.lib", "wldap32.lib", "Crypt32.lib" , "ws2_32.lib", "winmm.lib", "Normaliz.lib" }
 		buildoptions { "-DCURL_STATICLIB"}
 	filter {}
 	-- link dynamically from system package manager
@@ -40,6 +39,11 @@ project "random-wallpaper"
 		symbols "On"
 	filter {}
 
-  filter "configurations:Release"
+	filter "configurations:Release"
 		defines { "NDEBUG" }
 		optimize "On"
+	filter {}
+
+	filter { "system:windows", "configurations:Debug" }
+		ignoredefaultlibraries { "MSVCRT" }
+	filter {}

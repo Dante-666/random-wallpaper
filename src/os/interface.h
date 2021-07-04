@@ -1,19 +1,18 @@
 #pragma once
 
 #include "logutil/logger.h"
+#include "fetcher/cfetcher.h"
 
-#include <fstream>
 #include <memory>
+#include <regex>
 #include <string>
 #include <sstream>
+#include <thread>
 #include <vector>
 
-using std::make_unique;
-using std::ofstream;
 using std::string;
 using std::stringstream;
 using std::vector;
-using std::unique_ptr;
 
 class UtilImpl {
 public:

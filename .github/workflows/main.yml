@@ -50,11 +50,11 @@ jobs:
           submodules: recursive
       - name: set up premake and add to path
         uses: abel0b/setup-premake@v1
-      - name: build curl
+      - name: build curl x64
         uses: ilammy/msvc-dev-cmd@v1
         with: 
           arch: x64
-        run: |
+      - run: |
           cd external\curl
           call buildconf.bat
           cd winbuild
@@ -67,6 +67,7 @@ jobs:
           premake5 vs2019
           msbuild -m -p:Configuration=Debug random-wallpaper.sln
           msbuild -m -p:Configuration=Release random-wallpaper.sln
+
 # set VSLOCATION=C:\"Program Files (x86)\Microsoft Visual Studio"\2019\Enterprise\
 # echo %VSLOddCATION%
 # %VSLOCATION%\MSBuild\Current\Bin\MSbuild -m -p:Configuration=Debug random-wallpaper.sln

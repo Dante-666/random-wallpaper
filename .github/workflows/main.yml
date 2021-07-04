@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: CI
+name: build
 
 # Controls when the workflow will run
 on:
@@ -60,7 +60,7 @@ jobs:
       - name: configure
         run: premake5 vs2019
       - name: build
+        shell: cmd
         run: |
           set VSLOCATION=C:\"Program Files (x86)\Microsoft Visual Studio"\2019\Enterprise\
           %VSLOCATION%\MSBuild\Current\Bin\MSbuild -m build/random-wallpaper.vcxproj -property:Configuration=Release
-

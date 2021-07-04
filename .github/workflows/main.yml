@@ -50,14 +50,17 @@ jobs:
           submodules: recursive
       - name: set up premake and add to path
         uses: abel0b/setup-premake@v1
+      - name: configure curl
+        shell: cmd
+        run: |
+          cd external\curl
+          call buildconf.bat
       - name: build curl x64
         uses: ilammy/msvc-dev-cmd@v1
         with: 
           arch: x64
       - run: |
-          cd external\curl
-          Start-Process -FilePath "buildconf.bat" -NoNewWindow
-          cd winbuild
+          cd external\curl\winbuild
           nmake /f Makefile.vc mode=static MACHINE=x64 ENABLE_UNICODE=yes
       - name: Add msbuild to PATH
         uses: microsoft/setup-msbuild@v1.0.2

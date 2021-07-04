@@ -56,7 +56,7 @@ jobs:
           arch: x64
       - run: |
           cd external\curl
-          call buildconf.bat
+          Start-Process -FilePath "buildconf.bat" -NoNewWindow
           cd winbuild
           nmake /f Makefile.vc mode=static MACHINE=x64 ENABLE_UNICODE=yes
       - name: Add msbuild to PATH

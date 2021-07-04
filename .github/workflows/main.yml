@@ -51,14 +51,16 @@ jobs:
       - name: build curl
         shell: cmd
         run: |
-          dir C:\"Program Files (x86)\Microsoft Visual Studio"\2019\Enterprise
-          dir C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Tools\MSVC\
-          call C:\"Program Files (x86)\Microsoft Visual Studio"\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat x64
+          set VSLOCATION=C:\"Program Files (x86)\Microsoft Visual Studio"\2019\Enterprise\
+          call %VSLOCATION%\VC\Auxiliary\Build\vcvarsall.bat x64
           cd external\curl
           call buildconf.bat
           cd winbuild
-          C:\"Program Files (x86)\Microsoft Visual Studio"\2019\Enterprise\VC\Tools\MSVC\14.29.30037\bin\Hostx64\x64\nmake /f Makefile.vc mode=static MACHINE=x64 ENABLE_UNICODE=yes
+          %VSLOCATION%\VC\Tools\MSVC\14.29.30037\bin\Hostx64\x64\nmake /f Makefile.vc mode=static MACHINE=x64 ENABLE_UNICODE=yes
       - name: configure
         run: premake5 vs2019
       - name: build
-        run: msbuild -m build/random-wallpaper.vcxproj
+        run: |
+          set VSLOCATION=C:\"Program Files (x86)\Microsoft Visual Studio"\2019\Enterprise\
+          %VSLOCATION%\MSBuild\Current\Bin\MSbuild -m build/random-wallpaper.vcxproj -property:Configuration=Release
+

@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: CI
+name: build
 
 # Controls when the workflow will run
 on:
@@ -35,7 +35,9 @@ jobs:
       - name: configure
         run: premake5 gmake2
       - name: build
-        run: make config=release -j
+        run: |
+            make config=debug -j
+            make config=release -j
         
   windows-build:
     # This is for windows
@@ -49,18 +51,23 @@ jobs:
       - name: set up premake and add to path
         uses: abel0b/setup-premake@v1
       - name: build curl
-        shell: cmd
+        uses: ilammy/msvc-dev-cmd@v1
+        with: 
+          arch: x64
         run: |
-          set VSLOCATION=C:\"Program Files (x86)\Microsoft Visual Studio"\2019\Enterprise\
-          call %VSLOCATION%\VC\Auxiliary\Build\vcvarsall.bat x64
           cd external\curl
           call buildconf.bat
           cd winbuild
-          %VSLOCATION%\VC\Tools\MSVC\14.29.30037\bin\Hostx64\x64\nmake /f Makefile.vc mode=static MACHINE=x64 ENABLE_UNICODE=yes
-      - name: configure
-        run: premake5 vs2019
-      - name: build
+          nmake /f Makefile.vc mode=static MACHINE=x64 ENABLE_UNICODE=yes
+      - name: Add msbuild to PATH
+        uses: microsoft/setup-msbuild@v1.0.2
+      - name: configure and build
+        shell: cmd
         run: |
-          set VSLOCATION=C:\"Program Files (x86)\Microsoft Visual Studio"\2019\Enterprise\
-          %VSLOCATION%\MSBuild\Current\Bin\MSbuild -m build/random-wallpaper.vcxproj -property:Configuration=Release
-
+          premake5 vs2019
+          msbuild -m -p:Configuration=Debug random-wallpaper.sln
+          msbuild -m -p:Configuration=Release random-wallpaper.sln
+# set VSLOCATION=C:\"Program Files (x86)\Microsoft Visual Studio"\2019\Enterprise\
+# echo %VSLOddCATION%
+# %VSLOCATION%\MSBuild\Current\Bin\MSbuild -m -p:Configuration=Debug random-wallpaper.sln
+# %VSLOCATION%\MSBuild\Current\Bin\MSbuild -m -p:Configuration=Release random-wallpaper.sln

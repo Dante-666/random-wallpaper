@@ -24,6 +24,8 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
+        with:
+          submodules: recursive
       - name: set up premake and add to path
         uses: abel0b/setup-premake@v1
       - name: setup libcurl
@@ -49,11 +51,13 @@ jobs:
       - name: build curl
         shell: cmd
         run: |
-          call vcvarsall.bat
+          dir C:\"Program Files (x86)\Microsoft Visual Studio"\2019\Enterprise
+          dir C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Tools\MSVC\
+          call C:\"Program Files (x86)\Microsoft Visual Studio"\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat x64
           cd external\curl
           call buildconf.bat
           cd winbuild
-          nmake /f Makefile.vc mode=static MACHINE=x64 ENABLE_UNICODE=yes
+          C:\"Program Files (x86)\Microsoft Visual Studio"\2019\Enterprise\VC\Tools\MSVC\14.29.30037\bin\Hostx64\x64\nmake /f Makefile.vc mode=static MACHINE=x64 ENABLE_UNICODE=yes
       - name: configure
         run: premake5 vs2019
       - name: build

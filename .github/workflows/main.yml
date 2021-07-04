@@ -35,7 +35,9 @@ jobs:
       - name: configure
         run: premake5 gmake2
       - name: build
-        run: make config=release -j
+        run: |
+            make config=debug -j
+            make config=release -j
         
   windows-build:
     # This is for windows
@@ -57,10 +59,12 @@ jobs:
           call buildconf.bat
           cd winbuild
           %VSLOCATION%\VC\Tools\MSVC\14.29.30037\bin\Hostx64\x64\nmake /f Makefile.vc mode=static MACHINE=x64 ENABLE_UNICODE=yes
-      - name: configure
-        run: premake5 vs2019
-      - name: build
+      - name: configure and build
         shell: cmd
         run: |
+          premake5 vs2019
+          echo %VSLOCATION%
           set VSLOCATION=C:\"Program Files (x86)\Microsoft Visual Studio"\2019\Enterprise\
-          %VSLOCATION%\MSBuild\Current\Bin\MSbuild -m build/random-wallpaper.vcxproj -property:Configuration=Release
+          echo %VSLOCATION%
+          %VSLOCATION%\MSBuild\Current\Bin\MSbuild -m -p:Configuration=Debug random-wallpaper.sln
+          %VSLOCATION%\MSBuild\Current\Bin\MSbuild -m -p:Configuration=Release random-wallpaper.sln

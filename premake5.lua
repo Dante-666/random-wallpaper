@@ -68,5 +68,5 @@ project "tests"
 	files { "src/tests/*.cc" }
 
 	filter "system:linux or system:macosx"
-		links { "gtest", "random-wallpaper" }
+		links { "gtest", "random-wallpaper", "pthread" }
 	filter {}

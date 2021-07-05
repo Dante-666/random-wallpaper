@@ -1,7 +1,7 @@
 # random-wallpaper
 
-[![Action Status](https://github.com/Dante-666/random-wallpaper/workflows/build/badge.svg)](https://github.com/Dante-666/random-wallpaper/actions)
-
+[![Action Status](https://github.com/Dante-666/random-wallpaper/workflows/linux/badge.svg)](https://github.com/Dante-666/random-wallpaper/actions)
+[![Action Status](https://github.com/Dante-666/random-wallpaper/workflows/windows/badge.svg)](https://github.com/Dante-666/random-wallpaper/actions)
 
 Cycle through wallpapers from configurable source(s)
 

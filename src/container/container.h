@@ -6,10 +6,12 @@
 #include <cassert>
 #include <deque>
 #include <random>
+#include <set>
 #include <string>
 #include <vector>
 
 using std::deque;
+using std::set;
 using std::string;
 using std::vector;
 
@@ -21,7 +23,7 @@ class Container {
 
 public:
   ~Container();
-	/* The lifecycle of list should determine the clearance of memory*/
+  /* The lifecycle of list should determine the clearance of memory*/
   void append(vector<string> &list);
   void randomize();
   const string popURI();

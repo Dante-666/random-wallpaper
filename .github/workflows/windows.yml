@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: build
+name: windows
 
 # Controls when the workflow will run
 on:
@@ -15,32 +15,8 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
-  linux-build:
-    # The type of runner that the job will run on
-    runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
-    steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
-        with:
-          submodules: recursive
-      - name: set up premake and add to path
-        uses: abel0b/setup-premake@v1
-      - name: setup libcurl
-        run: |
-            sudo apt-get update
-            sudo apt-get install libcurl4-openssl-dev
-      - name: configure
-        run: premake5 gmake2
-      - name: build
-        run: |
-            make config=debug -j
-            make config=release -j
-        
+  # This is for windows
   windows-build:
-    # This is for windows
     runs-on: windows-2019
 
     # Specific steps
@@ -64,9 +40,14 @@ jobs:
           nmake /f Makefile.vc mode=static MACHINE=x64 ENABLE_UNICODE=yes
       - name: Add msbuild to PATH
         uses: microsoft/setup-msbuild@v1.0.2
+      - name: Install gtest
+        uses: MarkusJx/googletest-installer@v1.1
       - name: configure and build
         shell: cmd
         run: |
           premake5 vs2019
-          msbuild -m -p:Configuration=Debug random-wallpaper.sln
           msbuild -m -p:Configuration=Release random-wallpaper.sln
+      - name: test      
+        run: |
+            ./build/bin/Release/tests
+          

@@ -43,10 +43,9 @@ jobs:
       - name: Install gtest
         uses: MarkusJx/googletest-installer@v1.1
       - name: configure and build
-        shell: cmd
         run: |
           premake5 vs2019
-          msbuild -m -p:Configuration=Release random-wallpaper.sln
+          msbuild -m -p:Configuration=Release build/random-wallpaper.sln
       - name: test      
         run: |
             ./build/bin/Release/tests

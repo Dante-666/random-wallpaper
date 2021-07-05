@@ -38,6 +38,7 @@ jobs:
         run: premake5 gmake2
       - name: build
         run: |
+            cd build
             make config=release -j
       - name: test      
         run: |

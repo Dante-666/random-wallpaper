@@ -67,6 +67,10 @@ project "tests"
 
 	files { "src/tests/*.cc" }
 
+	filter "system:windows"
+		--TODO: What's wrong?
+	filter {}
+
 	filter "system:linux or system:macosx"
 		links { "gtest", "random-wallpaper", "pthread" }
 	filter {}

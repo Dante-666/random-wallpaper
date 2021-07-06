@@ -26,7 +26,7 @@ workspace "random-wallpaper"
 	-- follow CURL documentation for more
 	filter "system:windows"
 		includedirs {"external/curl/builds/libcurl*/include", "D:/gtest/include"}
-		libdirs { "external/curl/builds/libcurl*/lib", "D:/gtest/lib" }
+		libdirs { "external/curl/builds/libcurl*/lib" }
 		links { "libcurl_a.lib", "wldap32.lib", "Crypt32.lib",
 						"ws2_32.lib", "winmm.lib", "Normaliz.lib" }
 		buildoptions { "-DCURL_STATICLIB"}
@@ -58,6 +58,9 @@ project "rwall"
 
 	files { "src/main.cc" }
 	
+	filter "system:windows"
+		links { "random-wallpaper.lib" }
+	filter {}
 	filter "system:linux or system:macosx"
 		links { "random-wallpaper" }
 	filter{}
@@ -67,8 +70,11 @@ project "tests"
 
 	files { "src/tests/*.cc" }
 
-	filter "system:windows"
-		--TODO: What's wrong?
+	filter { "system:windows" }
+		includedirs {"D:/gtest/include"}
+		libdirs { "D:/gtest/lib" }
+		links { "gtest", "random-wallpaper" }
+		ignoredefaultlibraries { "LIBCMT" }
 	filter {}
 
 	filter "system:linux or system:macosx"

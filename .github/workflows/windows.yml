@@ -45,7 +45,7 @@ jobs:
       - name: configure and build
         run: |
           premake5 vs2019
-          msbuild -m -p:Configuration=Release build/random-wallpaper.sln
+          msbuild -p:Configuration=Release build/random-wallpaper.sln
       - name: test      
         run: |
             ./build/bin/Release/tests

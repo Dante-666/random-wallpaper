@@ -7,7 +7,7 @@ _re("<span>\\s?<a\\s+href=\"(.*.(jpg|png|jpeg))\"", std::regex::ECMAScript) {};
 XMLParser::~XMLParser() {}
 
 vector<string> XMLParser::parseStream(const stringstream &stream) {
-	LogOutput("Parsing XML rss stream...");
+	Logger::LogDebug("Parsing XML rss stream...");
 	TiXmlDocument doc;
   doc.Parse(stream.str().c_str());
   auto root = doc.RootElement();

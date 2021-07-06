@@ -1,41 +1,55 @@
 #pragma once
 
-#include <ctime>
+#include <chrono>
+#include <ratio>
 #include <iostream>
+#include <iomanip>
+#include <memory>
 #include <type_traits>
 
 using std::cerr;
 using std::cout;
 using std::endl;
+using std::ostream;
 using std::string;
+using std::stringstream;
 
-#ifdef DEBUG
-template <typename> struct write_output : std::true_type {};
-#else
-template <typename> struct write_output : std::false_type {};
-#endif
+using std::chrono::current_zone;
+using std::chrono::seconds;
+using std::chrono::system_clock;
+using std::chrono::zoned_time;
 
-template <typename T = void>
-typename std::enable_if<write_output<T>::value, void>::type
-LogOutput(const string &message) {
-  time_t now;
-  struct tm *timeinfo;
-  time(&now);
-  timeinfo = localtime(&now);
-	string stime(asctime(timeinfo));
+using std::unique_ptr;
+using std::make_unique;
 
-  cout << stime.substr(0, stime.length() - 1)  << " : " << message << endl;
-}
-template <typename T = void>
-typename std::enable_if<!write_output<T>::value, void>::type
-LogOutput(const string &message) {}
+enum class LogLevel
+{
+  ALL = 0, INFO = 1, WARN = 2, FATAL = 3
+};
 
-template <typename T = void> void LogError(const string &message) {
-  time_t now;
-  struct tm *timeinfo;
-  time(&now);
-  timeinfo = localtime(&now);
-	string stime(asctime(timeinfo));
+class LoggerImpl
+{
+  virtual void _log(const string &message) = 0;
+  unique_ptr<LoggerImpl> _next;
+public:
+  void log(const string &message);
+};
 
-  cerr << stime.substr(0, stime.length() - 1)  << " : " << message << endl;
-}
+class ConsoleLogger : public LoggerImpl
+{
+  virtual void _log(const string &message) override;
+};
+
+class Logger
+{
+  static unique_ptr<LoggerImpl> _impl;
+  static LogLevel _level;
+  static void log(const LogLevel &level, const string &message);
+public:
+  static void LogDebug(const string& message);
+  static void LogInfo(const string& message);
+  static void LogWarn(const string& message);
+  static void LogError(const string& message);
+};
+
+//TODO: FileLogger later

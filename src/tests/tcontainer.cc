@@ -1,4 +1,5 @@
 #include <gtest/gtest.h>
+//#include "gtest/gtest.h"
 
 #include "container/container.h"
 
@@ -28,7 +29,7 @@ TEST(testContainer, emptyRandomize) {
   while (run) {
     try {
       output.emplace_back(tContainer.popURI());
-    } catch (const std::out_of_range &e) {
+    } catch (const std::out_of_range &) {
       run = false;
     }
   }
@@ -56,7 +57,7 @@ TEST(testContainer, duplicacy) {
     try {
       auto it = output.insert(tContainer.popURI());
 			EXPECT_TRUE(it.second);
-    } catch (const std::out_of_range &e) {
+    } catch (const std::out_of_range &) {
       run = false;
     }
   }

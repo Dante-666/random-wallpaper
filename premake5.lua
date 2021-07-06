@@ -20,15 +20,15 @@ workspace "random-wallpaper"
 		libdirs { "build/bin/Release" }
 	filter {}
 	-- curl is not present by default for win, for a x64 OS, do this
-	-- build it manually first using a Developer CMD for VS; set target vcvarsall x64
-	-- goto source root and run buildconf.bat
-	-- goto winbuild and run nmake /f Makefile.vc mode=static MACHINE=x64 ENABLE_UNICODE=yes
-	-- follow CURL documentation for more
+  -- mkdir builds && cd builds
+  -- cmake -A x64 -DBUILD_SHARED_LIBS=OFF -DCURL_STATIC_CRT=ON -DENABLE_UNICODE=ON ..
+  -- cmake --build . --config [Release|Debug]
 	filter "system:windows"
-		includedirs {"external/curl/builds/libcurl*/include", "D:/gtest/include"}
-		libdirs { "external/curl/builds/libcurl*/lib", "D:/gtest/lib" }
-		links { "libcurl_a.lib", "wldap32.lib", "Crypt32.lib",
+		includedirs {"external/curl/include", "D:/gtest/include"}
+		libdirs { "external/curl/builds/lib/Release" }
+		links { "libcurl.lib", "wldap32.lib", "Crypt32.lib",
 						"ws2_32.lib", "winmm.lib", "Normaliz.lib" }
+		staticruntime "on"
 		buildoptions { "-DCURL_STATICLIB"}
 	filter {}
 	-- link dynamically from system package manager
@@ -37,7 +37,7 @@ workspace "random-wallpaper"
 	filter {}
 
 	filter { "system:windows", "configurations:Debug" }
-		ignoredefaultlibraries { "MSVCRT" }
+		ignoredefaultlibraries { "MSVCRT", "LIBCMT" }
 	filter {}
 
 project "random-wallpaper"
@@ -58,6 +58,9 @@ project "rwall"
 
 	files { "src/main.cc" }
 	
+	filter "system:windows"
+		links { "random-wallpaper.lib" }
+	filter {}
 	filter "system:linux or system:macosx"
 		links { "random-wallpaper" }
 	filter{}
@@ -67,8 +70,16 @@ project "tests"
 
 	files { "src/tests/*.cc" }
 
-	filter "system:windows"
-		--TODO: What's wrong?
+	filter { "system:windows" }
+		includedirs {"D:/gtest/include"}
+		libdirs { "D:/gtest/lib" }
+		links { "random-wallpaper" }
+		filter { "configurations:Release" }
+			links { "gtest" }
+		filter {}
+		filter { "configurations:Debug" }
+			links { "gtestd" }
+		filter {}
 	filter {}
 
 	filter "system:linux or system:macosx"

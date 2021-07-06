@@ -31,7 +31,7 @@ jobs:
       - name: Build cURL
         shell: cmd
         run: |
-            mkdir builds && cd builds
+            cd external\curl && mkdir builds && cd builds
             cmake -A x64 -DBUILD_SHARED_LIBS=OFF -DCURL_STATIC_CRT=ON -DENABLE_UNICODE=ON ..
             cmake --build . --config Release
       - name: Add msbuild to PATH

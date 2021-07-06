@@ -27,7 +27,7 @@ jobs:
         with:
           submodules: recursive
       - name: Setup premake
-        uses: abel0b/setup-premake@v1
+        uses: Dante-666/setup-premake@v1
       - name: Setup libcurl
         run: |
             sudo apt-get update
@@ -39,6 +39,6 @@ jobs:
             premake5 gmake2
             cd build
             make config=release -j
-      - name:       
+      - name:
         run: |
             ./build/bin/Release/tests

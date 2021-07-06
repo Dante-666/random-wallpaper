@@ -24,29 +24,27 @@ jobs:
       - uses: actions/checkout@v2
         with:
           submodules: recursive
-      - name: set up premake and add to path
+      - name: Setup premake
         uses: abel0b/setup-premake@v1
-      - name: configure curl
+      - name: Setup cmake
+        uses: jwlawson/actions-setup-cmake@v1.9
+      - name: Build cURL
         shell: cmd
         run: |
-          cd external\curl
-          call buildconf.bat
-      - name: build curl x64
-        uses: ilammy/msvc-dev-cmd@v1
-        with: 
-          arch: x64
-      - run: |
-          cd external\curl\winbuild
-          nmake /f Makefile.vc mode=static MACHINE=x64 ENABLE_UNICODE=yes
+            mkdir builds && cd builds
+            cmake -A x64 -DBUILD_SHARED_LIBS=OFF -DCURL_STATIC_CRT=ON -DENABLE_UNICODE=ON ..
+            cmake --build . --config Release
       - name: Add msbuild to PATH
         uses: microsoft/setup-msbuild@v1.0.2
+        # By default, this installs a Release version
+        # For local debug builds, build gtest in Debug mode
       - name: Install gtest
         uses: MarkusJx/googletest-installer@v1.1
-      - name: configure and build
+      - name: Configure and Build
         run: |
           premake5 vs2019
           msbuild -p:Configuration=Release build/random-wallpaper.sln
-      - name: test      
+      - name: Run tests
         run: |
             ./build/bin/Release/tests
           

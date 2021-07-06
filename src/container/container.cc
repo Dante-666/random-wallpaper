@@ -3,7 +3,7 @@
 Container::~Container() {}
 
 void Container::append(vector<string> &list) {
-  LogOutput("Appending to random container");
+  //LogOutput("Appending to random container");
   std::move(list.begin(), list.end(), std::back_inserter(_tempStore));
 }
 

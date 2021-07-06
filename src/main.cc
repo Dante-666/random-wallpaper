@@ -20,7 +20,7 @@ int main() {
 
 	OSUtils::updateWallpaper(container.popURI());
 
-	LogOutput("Exiting...");
+	Logger::LogInfo("Exiting...");
 
   return 0;
 }

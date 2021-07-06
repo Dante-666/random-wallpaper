@@ -23,7 +23,7 @@ size_t MemChunk::write_callback(char *buffer, size_t size, size_t nitems,
     memChunk->memory[memChunk->size] = 0;
     return realsize;
   } else {
-    LogError("Not enough memory!");
+    Logger::LogError("Not enough memory!");
     return 0;
   }
 }
@@ -42,7 +42,7 @@ stringstream CurlFetcher::fetchResource(const string &uri) {
   curl_handle = curl_easy_init();
 
   if (curl_handle) {
-    LogOutput("Handle Initialized...");
+    Logger::LogDebug("Handle Initialized...");
     std::unique_ptr<MemChunk> chunk = std::make_unique<MemChunk>();
     curl_easy_setopt(curl_handle, CURLOPT_URL, uri.c_str());
     curl_easy_setopt(curl_handle, CURLOPT_WRITEFUNCTION,
@@ -57,11 +57,11 @@ stringstream CurlFetcher::fetchResource(const string &uri) {
       return chunk->get_string();
     } else {
 			//TODO: error handling
-      LogError(curl_easy_strerror(retVal));
+      Logger::LogError(curl_easy_strerror(retVal));
     }
   }
   //TODO: error handling
-  LogError("Couldn't obtain handle...");
+  Logger::LogError("Couldn't obtain handle...");
   return {};
 }
 
@@ -71,7 +71,7 @@ void CurlFetcher::writeImageToDisk(const string &uri, const string& file) {
   curl_handle = curl_easy_init();
 
   if (curl_handle) {
-    LogOutput("Handle Initialized...");
+    Logger::LogDebug("Handle Initialized...");
 		unique_ptr<ofstream> outfile = make_unique<ofstream>(file, std::ios_base::binary);
     curl_easy_setopt(curl_handle, CURLOPT_URL, uri.c_str());
     curl_easy_setopt(curl_handle, CURLOPT_WRITEFUNCTION, +[] (char *buffer, size_t size, size_t nitems, ofstream *outstream) -> size_t {
@@ -89,10 +89,10 @@ void CurlFetcher::writeImageToDisk(const string &uri, const string& file) {
 			outfile->close();
     } else {
 			//TODO: error handling
-      LogError(curl_easy_strerror(retVal));
+      Logger::LogError(curl_easy_strerror(retVal));
     }
   } else {
     //TODO: error handling
-    LogError("Couldn't obtain handle...");
+    Logger::LogError("Couldn't obtain handle...");
   }
 }

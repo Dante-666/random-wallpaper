@@ -51,12 +51,12 @@ void Windows::updateWallpaper(const string &uri)
 
 	if (regex_search(uri, ext, re))
 	{
-		LogOutput("Initializing download...");
+		Logger::LogDebug("Initializing download...");
 		const string fullName = tmpLocation + ext[0].str();
 
 		//TODO: handle and then claim file written
 		CurlFetcher::writeImageToDisk(uri, fullName);
-		LogOutput("File written...");
+		Logger::LogDebug("File written...");
 		stringstream itemProp;
 		itemProp << "powershell.exe Set-ItemProperty -path 'HKCU:\\Control Panel\\Desktop\\' -name Wallpaper -value \"" << fullName << "\"";
 		systemCall(itemProp.str().c_str());
@@ -66,7 +66,7 @@ void Windows::updateWallpaper(const string &uri)
 	else
 	{
 		//TODO: error handling
-		LogError("Invalid file extension...");
+		Logger::LogError("Invalid file extension...");
 	}
 }
 

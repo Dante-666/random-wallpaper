@@ -26,6 +26,7 @@ jobs:
       - uses: actions/checkout@v2
         with:
           submodules: recursive
+      - run: rm -rf .premake
       - name: Setup premake
         uses: Dante-666/setup-premake@v1
       - name: Setup libcurl
@@ -38,6 +39,6 @@ jobs:
         run: |
             echo $(premake5 --version)
             premake5 gmake2 && cd build && make config=release -j
-      - name:
+      - name: Run tests
         run: |
             ./build/bin/Release/tests

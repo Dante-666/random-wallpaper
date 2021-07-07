@@ -2,7 +2,7 @@ workspace "random-wallpaper"
   configurations { "Debug", "Release" }
   language "C++"
   location "build"
-	cppdialect "c++20"
+	cppdialect "C++20"
 	architecture "x64"
 
 	includedirs { "src", "external/tinyxml" }

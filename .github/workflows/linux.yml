@@ -29,6 +29,7 @@ jobs:
       - run: rm -rf .premake
       - name: Setup premake
         uses: Dante-666/setup-premake@v1
+      - run: premake5 gmake2
       - name: Setup libcurl
         run: |
             sudo apt-get update

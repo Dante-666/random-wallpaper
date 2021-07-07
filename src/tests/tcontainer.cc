@@ -56,7 +56,7 @@ TEST(testContainer, duplicacy) {
   while (run) {
     try {
       auto it = output.insert(tContainer.popURI());
-			EXPECT_TRUE(it.second);
+      EXPECT_TRUE(it.second);
     } catch (const std::out_of_range &) {
       run = false;
     }

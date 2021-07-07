@@ -6,9 +6,9 @@
 
 #include "logutil/logger.h"
 
+using std::cmatch;
 using std::regex;
 using std::regex_search;
-using std::cmatch;
 
 using std::string;
 using std::stringstream;

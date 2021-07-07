@@ -4,9 +4,10 @@
 #include "tinyxml.h"
 
 class XMLParser : public Parser {
-	regex _re;
+  regex _re;
+
 public:
-	XMLParser();
+  XMLParser();
   virtual ~XMLParser() override;
   virtual vector<string> parseStream(const stringstream &stream) override;
 };

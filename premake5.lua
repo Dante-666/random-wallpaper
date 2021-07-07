@@ -2,7 +2,6 @@ workspace "random-wallpaper"
   configurations { "Debug", "Release" }
   language "C++"
   location "build"
-	cppdialect "C++20"
 	architecture "x64"
 
 	includedirs { "src", "external/tinyxml" }
@@ -23,6 +22,7 @@ workspace "random-wallpaper"
   -- cmake -A x64 -DBUILD_SHARED_LIBS=OFF -DCURL_STATIC_CRT=ON -DENABLE_UNICODE=ON ..
   -- cmake --build . --config [Release|Debug]
 	filter "system:windows"
+		cppdialect "C++20"
 		includedirs {"external/curl/include", "D:/gtest/include"}
 		libdirs { "external/curl/builds/lib/Release" }
 		links { "libcurl.lib", "wldap32.lib", "Crypt32.lib",
@@ -32,6 +32,8 @@ workspace "random-wallpaper"
 	filter {}
 	-- link dynamically from system package manager
 	filter "system:linux or system:macosx"
+		--TODO: On Arch this is failing, zoned_time is not defined
+		cppdialect "C++17"
 		links { "curl" }
 	filter {}
 
@@ -73,12 +75,13 @@ project "tests"
 		includedirs {"D:/gtest/include"}
 		libdirs { "D:/gtest/lib" }
 		links { "random-wallpaper" }
-		filter { "configurations:Release" }
-			links { "gtest" }
-		filter {}
-		filter { "configurations:Debug" }
-			links { "gtestd" }
-		filter {}
+	filter {}
+
+	filter { "system:windows", "configurations:Release" }
+		links { "gtest" }
+	filter {}
+	filter { "system:windows", "configurations:Debug" }
+		links { "gtestd" }
 	filter {}
 
 	filter "system:linux or system:macosx"

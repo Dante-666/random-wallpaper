@@ -14,17 +14,22 @@ using std::ostream;
 using std::string;
 using std::stringstream;
 
+#if defined _WIN64 || defined _WIN32
 using std::chrono::current_zone;
+using std::chrono::zoned_time;
+#endif
 using std::chrono::seconds;
 using std::chrono::system_clock;
-using std::chrono::zoned_time;
 
 using std::unique_ptr;
 using std::make_unique;
 
+#undef DEBUG
+#undef ERROR
+
 enum class LogLevel
 {
-  ALL = 0, INFO = 1, WARN = 2, FATAL = 3
+  DEBUG = 0, INFO = 1, WARN = 2, ERROR = 3
 };
 
 class LoggerImpl

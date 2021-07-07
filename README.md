@@ -9,13 +9,13 @@ TODO: Add gifs for linux and windows
 
 ## Build Instructions
 
-Right now, there are only three operation systems(x64) which are supported. If you get stuck with any steps, then please have a look at the .github/workflows/main.yml for explicit build commands.
+Right now, there are only three operation systems(x64) which are supported. If you get stuck with any steps, then please have a look at the .github/workflows/{os}.yml for explicit build commands.
 
 Clone the repository and submodules first as a common step.
 
       git clone --recurse-submodules https://github.com/Dante-666/random-wallpaper
 
-Then run premake for the required platform. For example, on linux run
+Then run premake for the required platform. Make sure you are using the latest version of premake5 since c++20 is needed for this. For example, on linux run
 
       premake5 gmake2
 
@@ -41,13 +41,15 @@ TODO: background setter workflow
 
 ### Windows
 
-For windows, first you'll have to build cURL and the simplest way to do that is by following the guide at **external/curl/winbuild/README.md**.
+For windows, first you'll have to build cURL and the best way to do it is via cmake and you can find the build commands in actions workflow for windows.
 
 You need Visual Studio BuildTools to build this and it is shipped with Visual Studio Editor or can be downloaded separately.
 
-Assuming that premake was run with the flag **vs2019** and the build directory contains **random-wallpaper.vcxproj**.
+Run premake5 with the flag **vs2019** and the build directory contains **random-wallpaper.vcxproj**.
 
-      MSbuild -m build/random-wallpaper.vcxproj -property:Configuration=Release
+      premake5 vs2019
+      MSbuild -p:Configuration=Release build/random-wallpaper.sln
 
+For now, 64 bit is the only supported architecture. I hope everyone is out of the caves.
 ## Config file
 ### TODO: add this file

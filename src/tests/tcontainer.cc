@@ -5,7 +5,7 @@
 
 TEST(testContainer, emptyContainer) {
   Container tContainer;
-  EXPECT_THROW(tContainer.popURI(), std::out_of_range);
+  EXPECT_THROW(tContainer.getURI(), std::out_of_range);
 }
 
 TEST(testContainer, emptyRandomize) {
@@ -24,22 +24,17 @@ TEST(testContainer, emptyRandomize) {
 
   EXPECT_NO_THROW(tContainer.randomize());
 
-  std::vector<string> output;
-  bool run = true;
-  while (run) {
-    try {
-      output.emplace_back(tContainer.popURI());
-    } catch (const std::out_of_range &) {
-      run = false;
-    }
-  }
-
   vector<string> list{"a", "aa", "aaa", "b", "bb", "bbb", "c", "cc", "ccc"};
+  vector<string> output;
+  bool run = true;
+  for_each(list.begin(), list.end(),
+           [&](const string &) { output.push_back(tContainer.getURI()); });
+
   EXPECT_EQ(output.size(), list.size());
   EXPECT_TRUE(output != list);
 }
 
-TEST(testContainer, duplicacy) {
+TEST(testContainer, repetition) {
   Container tContainer;
   EXPECT_NO_THROW(tContainer.randomize());
   {
@@ -51,14 +46,12 @@ TEST(testContainer, duplicacy) {
 
   EXPECT_NO_THROW(tContainer.randomize());
 
-  std::set<string> output;
-  bool run = true;
-  while (run) {
-    try {
-      auto it = output.insert(tContainer.popURI());
-      EXPECT_TRUE(it.second);
-    } catch (const std::out_of_range &) {
-      run = false;
-    }
-  }
+  vector<string> outPassOne(3);
+  for_each(outPassOne.begin(), outPassOne.end(),
+           [&](const string &) { outPassOne.push_back(tContainer.getURI()); });
+  vector<string> outPassTwo(3);
+  for_each(outPassTwo.begin(), outPassTwo.end(),
+           [&](const string &) { outPassTwo.push_back(tContainer.getURI()); });
+
+  EXPECT_TRUE(outPassOne == outPassTwo);
 }

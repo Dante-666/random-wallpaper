@@ -33,7 +33,7 @@ jobs:
             make -f Bootstrap.mak linux CONFIG=release
       # TODO: remove later
       - run: |
-            .premake-core/bin/release/premake5 gmake2
+            premake-core/bin/release/premake5 --version
       - name: Setup libcurl
         run: |
             sudo apt-get update
@@ -42,7 +42,7 @@ jobs:
         uses: MarkusJx/googletest-installer@v1.1
       - name: Configure and build
         run: |
-            .premake-core/bin/release/premake5 gmake2 && cd build && make config=release -j
+            premake-core/bin/release/premake5 gmake2 && cd build && make config=release -j
       - name: Run tests
         run: |
             ./build/bin/Release/tests

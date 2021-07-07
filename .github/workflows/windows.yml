@@ -24,8 +24,6 @@ jobs:
       - uses: actions/checkout@v2
         with:
           submodules: recursive
-      - name: Setup premake
-        uses: Dante-666/setup-premake@v1
       - name: Setup cmake
         uses: jwlawson/actions-setup-cmake@v1.9
       - name: Build cURL
@@ -36,13 +34,20 @@ jobs:
             cmake --build . --config Release
       - name: Add msbuild to PATH
         uses: microsoft/setup-msbuild@v1.0.2
-        # By default, this installs a Release version
-        # For local debug builds, build gtest in Debug mode
       - name: Install gtest
         uses: MarkusJx/googletest-installer@v1.1
+      - name: Add Developer utils
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: x64
+      - name: Build latest premake
+        run: |
+            git clone https://github.com/premake/premake-core
+            cd premake-core
+            nmake -f Bootstrap.mak MSDEV=vs2019 windows-msbuild PLATFORM=x64 CONFIG=release
       - name: Configure and Build
         run: |
-          premake5 vs2019
+          premake-core/bin/release/premake5 vs2019
           msbuild -p:Configuration=Release build/random-wallpaper.sln
       - name: Run tests
         run: |

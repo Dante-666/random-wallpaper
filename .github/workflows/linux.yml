@@ -31,9 +31,6 @@ jobs:
             git clone https://github.com/premake/premake-core
             cd premake-core
             make -f Bootstrap.mak linux CONFIG=release
-      # TODO: remove later
-      - run: |
-            premake-core/bin/release/premake5 --version
       - name: Setup libcurl
         run: |
             sudo apt-get update

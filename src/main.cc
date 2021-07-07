@@ -4,6 +4,8 @@
 #include "parsers/xmlparser.h"
 
 int main() {
+	Logger::LogInfo("Initializing...");
+
 	//TODO: Add these and other URI sources in *.conf
   string uri = "https://www.reddit.com/r/Animewallpaper/"
                "search.rss?q=flair_name%3A%22Desktop%22&restrict_sr=1";
@@ -18,7 +20,7 @@ int main() {
 	container.append(list);
 	container.randomize();
 
-	OSUtils::updateWallpaper(container.popURI());
+	OSUtils::updateWallpaper(container.getURI());
 
 	Logger::LogInfo("Exiting...");
 

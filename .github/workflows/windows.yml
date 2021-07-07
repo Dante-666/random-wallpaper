@@ -37,7 +37,7 @@ jobs:
       - name: Install gtest
         uses: MarkusJx/googletest-installer@v1.1
       - name: Add Developer utils
-      - uses: ilammy/msvc-dev-cmd@v1
+        uses: ilammy/msvc-dev-cmd@v1
         with:
           arch: x64
       - name: Build latest premake

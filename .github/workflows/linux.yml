@@ -39,7 +39,7 @@ jobs:
         uses: MarkusJx/googletest-installer@v1.1
       - name: Configure and build
         run: |
-            premake-core/bin/release/premake5 gmake2 && cd build && make config=Release -j
+            premake-core/bin/release/premake5 gmake2 && cd build && make config=release -j
       - name: Run tests
         run: |
             ./build/bin/Release/tests

@@ -5,17 +5,24 @@
 
 #include <memory>
 #include <regex>
+#include <filesystem>
+
 #include <fstream>
 #include <sstream>
 #include <string>
-#include <thread>
+
 #include <vector>
+
 
 using std::ifstream;
 using std::string;
 using std::stringstream;
 using std::ostringstream;
 using std::vector;
+
+class access_denied : std::exception {
+	virtual const char* what() const noexcept override;
+};
 
 class UtilImpl {
 public:

@@ -19,28 +19,29 @@ int UtilImpl::systemCall(const string &command) {
   return std::system(command.c_str());
 }
 
+const char *access_denied::what() const noexcept {
+  return "couldn't create/open file";
+}
+
 Linux::~Linux(){};
 
-vector<string> Linux::fetchFiles(const char *dir) {
-  stringstream lsDir;
-  lsDir << "ls " << tmpWorkDir << " &> /dev/null";
-  if (systemCall(lsDir.str()) != 0) {
-    stringstream mkdir;
-    mkdir << "mkdir -p " << tmpWorkDir;
-    systemCall(mkdir.str());
-  }
+vector<string> Linux::fetchFiles(const char *dir) try {
+	stringstream absPath;
+	absPath << getenv("HOME") << &tmpWorkDir[1];
+	if(not std::filesystem::exists(absPath.str())) {
+    Logger::LogInfo("Creating shared directory " + absPath.str());
+    std::filesystem::create_directories(absPath.str());
+	}
   stringstream command;
   command << "find " << dir << " -regex  \".*.\\(png\\|jpg\\|jpeg\\)$\" 1> "
           << tmpWorkDir << "/.linux_lsout";
   if (systemCall(command.str()) == 0) {
     ifstream input;
     {
-			/* ifstream doesn't recognize ~ */
-			//TODO: normalize this with fullpaths?
-			const char* homeDir = getenv("HOME");
-      stringstream location;
-      location << homeDir << &tmpWorkDir[1] << "/.linux_lsout";
-      input.open(location.str());
+      absPath << "/.linux_lsout";
+      input.open(absPath.str());
+      if (not input.is_open())
+        throw access_denied{};
     }
     vector<string> output;
     for (string line; getline(input, line);) {
@@ -49,8 +50,12 @@ vector<string> Linux::fetchFiles(const char *dir) {
     input.close();
     return output;
   } else {
+    Logger::LogError("find couldn't write to lsout!!!");
     return {};
   }
+} catch (const std::exception &e) {
+  Logger::LogError(e.what());
+  return {};
 }
 
 void Linux::updateWallpaper(const string &uri) {

@@ -2,9 +2,6 @@
 
 #include "os/interface.h"
 
-//TODO: incorporate methods from this later
-#include <filesystem>
-
 //TODO: this will fail on windows, fix #41
 #ifdef __linux__
 TEST(testFetchFile, linux) {

@@ -25,33 +25,33 @@ const char *access_denied::what() const noexcept {
 
 Linux::~Linux(){};
 
-vector<string> Linux::fetchFiles(const char *dir) try {
-	stringstream absPath;
-	absPath << getenv("HOME") << &tmpWorkDir[1];
-	if(not std::filesystem::exists(absPath.str())) {
-    Logger::LogInfo("Creating shared directory " + absPath.str());
-    std::filesystem::create_directories(absPath.str());
-	}
+vector<string> Linux::fetchFiles(const path &dir) try {
+  const auto &absPath = shellToAbs(tmpWorkDir);
+  if (not exists(absPath)) {
+    Logger::LogInfo("Creating shared directory " + absPath.string());
+    std::filesystem::create_directories(absPath);
+  }
   stringstream command;
-  command << "find " << dir << " -regex  \".*.\\(png\\|jpg\\|jpeg\\)$\" 1> "
-          << tmpWorkDir << "/.linux_lsout";
+  command << "find " << absolute(dir)
+          << " -regex  \".*.\\(png\\|jpg\\|jpeg\\)$\" 1> " << tmpWorkDir
+          << "/.linux_lsout";
   if (systemCall(command.str()) == 0) {
     ifstream input;
     {
-      absPath << "/.linux_lsout";
-      input.open(absPath.str());
+      Logger::LogInfo("Opening file to read lsout...");
+      input.open((absPath / ".linux_lsout").string());
       if (not input.is_open())
         throw access_denied{};
     }
     vector<string> output;
     for (string line; getline(input, line);) {
+			Logger::LogDebug(line);
       output.emplace_back(std::move(line));
     }
     input.close();
     return output;
   } else {
-    Logger::LogError("find couldn't write to lsout!!!");
-    return {};
+    throw access_denied{};
   }
 } catch (const std::exception &e) {
   Logger::LogError(e.what());
@@ -64,9 +64,19 @@ void Linux::updateWallpaper(const string &uri) {
   systemCall(command.str().c_str());
 }
 
+const path Linux::shellToAbs(const char *sPath) {
+  string strPath(sPath);
+  regex re("~");
+  stringstream homePrefix;
+  homePrefix << getenv("HOME")
+             << regex_replace(strPath, re, "", format_first_only);
+	Logger::LogDebug(homePrefix.str());
+  return homePrefix.str();
+}
+
 Windows::~Windows(){};
 
-vector<string> Windows::fetchFiles(const char *dir) { return {}; }
+vector<string> Windows::fetchFiles(const path &dir) { return {}; }
 
 void Windows::updateWallpaper(const string &uri) {
   /* download the file first and let this script transcode the image */
@@ -79,12 +89,13 @@ void Windows::updateWallpaper(const string &uri) {
   smatch ext;
 
   if (regex_search(uri, ext, re)) {
-    Logger::LogDebug("Initializing download...");
+    Logger::LogInfo("Initializing download...");
     const string fullName = tmpLocation + ext[0].str();
+		Logger::LogDebug(fullName + ", " + uri);
 
     // TODO: handle and then claim file written
     CurlFetcher::writeImageToDisk(uri, fullName);
-    Logger::LogDebug("File written...");
+    Logger::LogInfo("File written...");
     stringstream itemProp;
     itemProp << "powershell.exe Set-ItemProperty -path 'HKCU:\\Control "
                 "Panel\\Desktop\\' -name Wallpaper -value \""

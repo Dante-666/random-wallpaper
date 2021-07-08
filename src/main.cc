@@ -18,7 +18,8 @@ int main() {
   {
     auto list_rss = parser->parseStream(out);
 		//TODO: make path configurable but keep this as default
-    auto list_local = OSUtils::fetchFiles("~/pictures/wallpaper");
+		//TODO: figure out a way to add home directory
+    auto list_local = OSUtils::fetchFiles("/home/dante/pictures/wallpaper");
 
     container.append(list_rss);
     container.append(list_local);

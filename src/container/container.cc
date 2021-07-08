@@ -3,7 +3,7 @@
 Container::~Container() {}
 
 void Container::append(vector<string> &list) {
-  Logger::LogDebug("Appending to random container");
+  Logger::LogInfo("Appending to random container");
   std::move(list.begin(), list.end(), std::back_inserter(_tempStore));
 }
 
@@ -22,5 +22,6 @@ const string& Container::getURI() {
 	if(it == _uriStore.end()) {
 		it = _uriStore.begin();
 	}
+	Logger::LogDebug(*it);
 	return *(it++);
 }

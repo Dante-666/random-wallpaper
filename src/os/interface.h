@@ -3,22 +3,41 @@
 #include "fetcher/cfetcher.h"
 #include "logutil/logger.h"
 
+#include <filesystem>
 #include <memory>
 #include <regex>
+
+#include <fstream>
 #include <sstream>
 #include <string>
-#include <thread>
+
 #include <vector>
 
+using std::ifstream;
+using std::ostringstream;
 using std::string;
 using std::stringstream;
 using std::vector;
 
+using std::filesystem::absolute;
+using std::filesystem::create_directories;
+using std::filesystem::exists;
+using std::filesystem::path;
+
+using std::regex;
+using std::regex_constants::format_first_only;
+using std::regex_replace;
+
+class access_denied : std::exception {
+  virtual const char *what() const noexcept override;
+};
+
 class UtilImpl {
 public:
   virtual ~UtilImpl(){};
-  virtual vector<string> fetchFiles(const char *dir) = 0;
-  virtual int systemCall(const char *command) = 0;
+	/* Provide a relative/absolute path here */
+  virtual vector<string> fetchFiles(const path &dir) = 0;
+  virtual int systemCall(const string &command);
   virtual void updateWallpaper(const string &uri) = 0;
 };
 
@@ -27,25 +46,24 @@ class OSUtils {
 
 public:
   ~OSUtils() { delete &_impl; }
-  static vector<string> fetchFiles(const char *dir) {
+  static vector<string> fetchFiles(const path &dir) {
     return _impl.fetchFiles(dir);
   }
   static void updateWallpaper(const string &uri) { _impl.updateWallpaper(uri); }
 };
 
 class Linux : public UtilImpl {
+  static const char *tmpWorkDir;
   virtual ~Linux() override;
-  virtual vector<string> fetchFiles(const char *dir) override;
-  virtual int systemCall(const char *command) override;
+  virtual vector<string> fetchFiles(const path &dir) override;
   virtual void updateWallpaper(const string &uri) override;
+	/* converts shell ~ to absolute home path */
+	const path shellToAbs(const char* sPath);
 };
 
 class Windows : public UtilImpl {
   static const char *tmpLocation;
   virtual ~Windows() override;
-  virtual vector<string> fetchFiles(const char *dir) override;
-  virtual int systemCall(const char *command) override;
+  virtual vector<string> fetchFiles(const path &dir) override;
   virtual void updateWallpaper(const string &uri) override;
-  static size_t write_callback(char *buffer, size_t size, size_t nitems,
-                               ofstream *outstream);
 };

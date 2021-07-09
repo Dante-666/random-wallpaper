@@ -30,7 +30,7 @@ jobs:
         shell: cmd
         run: |
             cd external\curl && mkdir builds && cd builds
-            cmake -A x64 -DBUILD_SHARED_LIBS=OFF -DCURL_STATIC_CRT=ON -DENABLE_UNICODE=ON ..
+            cmake -A x64 -DBUILD_SHARED_LIBS=OFF -DCURL_STATIC_CRT=ON -DENABLE_UNICODE=ON -DCURL_WINDOWS_SSPI=ON -DCMAKE_USE_SCHANNEL=ON ..
             cmake --build . --config Release
       - name: Add msbuild to PATH
         uses: microsoft/setup-msbuild@v1.0.2

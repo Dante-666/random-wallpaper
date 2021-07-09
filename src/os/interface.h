@@ -25,45 +25,65 @@ using std::filesystem::exists;
 using std::filesystem::path;
 
 using std::regex;
-using std::regex_constants::format_first_only;
 using std::regex_replace;
+using std::regex_constants::format_first_only;
 
-class access_denied : std::exception {
+class access_denied : std::exception
+{
   virtual const char *what() const noexcept override;
 };
 
-class UtilImpl {
+class UtilImpl
+{
 public:
   virtual ~UtilImpl(){};
-	/* Provide a relative/absolute path here */
+  /* Provide a relative/absolute path here */
   virtual vector<string> fetchFiles(const path &dir) = 0;
   virtual int systemCall(const string &command);
   virtual void updateWallpaper(const string &uri) = 0;
+  // TODO: replace this later
+  virtual const path replaceHome(const char *sPath) = 0;
 };
 
-class OSUtils {
+class OSUtils
+{
   static UtilImpl &_impl;
 
 public:
   ~OSUtils() { delete &_impl; }
-  static vector<string> fetchFiles(const path &dir) {
-    return _impl.fetchFiles(dir);
+  static vector<string> fetchFiles(const path &dir)
+  {
+    return _impl.fetchFiles(replaceHome(dir));
   }
   static void updateWallpaper(const string &uri) { _impl.updateWallpaper(uri); }
+  /* converts shell ~ to absolute home path */
+  static const path replaceHome(const path sPath) try {
+    regex re("~");
+    auto homePrefix = regex_replace(sPath.string(), re, getenv("USERPROFILE"), format_first_only);
+    path homeP(homePrefix);
+    Logger::LogDebug(homePrefix);
+    exists(homeP);
+    return homePrefix;
+  } catch (const std::exception &e) {
+    Logger::LogError(e.what());
+    return {};
+  }
 };
 
-class Linux : public UtilImpl {
+class Linux : public UtilImpl
+{
   static const char *tmpWorkDir;
   virtual ~Linux() override;
   virtual vector<string> fetchFiles(const path &dir) override;
   virtual void updateWallpaper(const string &uri) override;
-	/* converts shell ~ to absolute home path */
-	const path shellToAbs(const char* sPath);
+  virtual const path replaceHome(const char *sPath) override;
 };
 
-class Windows : public UtilImpl {
-  static const char *tmpLocation;
+class Windows : public UtilImpl
+{
+  static const char *appDataLoc;
   virtual ~Windows() override;
   virtual vector<string> fetchFiles(const path &dir) override;
   virtual void updateWallpaper(const string &uri) override;
+  virtual const path replaceHome(const char *sPath) override;
 };

@@ -30,7 +30,7 @@ jobs:
         shell: cmd
         run: |
             cd external\curl && mkdir builds && cd builds
-            cmake -A x64 -DBUILD_SHARED_LIBS=OFF -DCURL_STATIC_CRT=ON -DENABLE_UNICODE=ON ..
+            cmake -A x64 -DBUILD_SHARED_LIBS=OFF -DCURL_STATIC_CRT=ON -DENABLE_UNICODE=ON -DCURL_WINDOWS_SSPI=ON -DCMAKE_USE_SCHANNEL=ON ..
             cmake --build . --config Release
       - name: Add msbuild to PATH
         uses: microsoft/setup-msbuild@v1.0.2
@@ -40,14 +40,17 @@ jobs:
         uses: ilammy/msvc-dev-cmd@v1
         with:
           arch: x64
-      - name: Build latest premake
-        run: |
-            git clone https://github.com/premake/premake-core
-            cd premake-core
-            nmake -f Bootstrap.mak MSDEV=vs2019 windows-msbuild PLATFORM=x64 CONFIG=release
+      - name: Setup premake
+        uses: abel0b/setup-premake@v1
+      # - name: Build latest premake
+      #   run: |
+      #       git clone https://github.com/premake/premake-core
+      #       cd premake-core
+      #       nmake -f Bootstrap.mak MSDEV=vs2019 windows-msbuild PLATFORM=x64 CONFIG=release
+      #    premake-core/bin/release/premake5 vs2019
       - name: Configure and Build
         run: |
-          premake-core/bin/release/premake5 vs2019
+          premake5 vs2019
           msbuild -p:Configuration=Release build/random-wallpaper.sln
       - name: Run tests
         run: |

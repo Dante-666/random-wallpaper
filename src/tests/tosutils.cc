@@ -7,9 +7,7 @@
 using std::string_view;
 using std::unordered_set;
 
-// TODO: this will fail on windows, fix #41
-#ifdef __linux__
-TEST(testFetchFile, linux) {
+TEST(testFetchFile, os_independent) {
   auto list = OSUtils::fetchFiles("test_resource");
 
   unordered_set<string_view> slist;
@@ -18,7 +16,7 @@ TEST(testFetchFile, linux) {
 
   vector<string> outputs{"test_resource/tos/z.jpeg",
                          "test_resource/tos/1/x.png",
-                         "test_resource/tos/1/2/y.jpg"};
+                         "test_resource/tos/1/with space/y.jpg"};
 
   for_each(outputs.begin(), outputs.end(), [&](const string &str) {
     EXPECT_TRUE(slist.find(absolute(str).string()) != slist.end());
@@ -27,4 +25,3 @@ TEST(testFetchFile, linux) {
 	// Test for filters to only work on image files
 	EXPECT_TRUE(slist.find("test_resource/tos/a.txt") == slist.end());
 }
-#endif

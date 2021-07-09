@@ -40,17 +40,14 @@ jobs:
         uses: ilammy/msvc-dev-cmd@v1
         with:
           arch: x64
-      - name: Setup premake
-        uses: abel0b/setup-premake@v1
-      # - name: Build latest premake
-      #   run: |
-      #       git clone https://github.com/premake/premake-core
-      #       cd premake-core
-      #       nmake -f Bootstrap.mak MSDEV=vs2019 windows-msbuild PLATFORM=x64 CONFIG=release
-      #    premake-core/bin/release/premake5 vs2019
+      - name: Build latest premake
+        run: |
+            git clone https://github.com/premake/premake-core
+            cd premake-core
+            nmake -f Bootstrap.mak MSDEV=vs2019 windows-msbuild PLATFORM=x64 CONFIG=release
       - name: Configure and Build
         run: |
-          premake5 vs2019
+          premake-core/bin/release/premake5 vs2019
           msbuild -p:Configuration=Release build/random-wallpaper.sln
       - name: Run tests
         run: |

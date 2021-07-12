@@ -55,6 +55,8 @@ public:
   static void LogInfo(const string& message);
   static void LogWarn(const string& message);
   static void LogError(const string& message);
+  static string s;
+  friend class LoggerImpl;
 };
 
 //TODO: FileLogger later

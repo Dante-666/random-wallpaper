@@ -42,15 +42,19 @@ void Logger::log(const LogLevel &level, const string &message) {
 }
 
 void Logger::LogDebug(const string &message) {
+  s=__PRETTY_FUNCTION__;
   Logger::log(LogLevel::DEBUG, message);
 }
 void Logger::LogInfo(const string &message) {
+  s=__PRETTY_FUNCTION__;
   Logger::log(LogLevel::INFO, message);
 }
 void Logger::LogWarn(const string &message) {
+  s=__PRETTY_FUNCTION__;
   Logger::log(LogLevel::WARN, message);
 }
 void Logger::LogError(const string &message) {
+  s=__PRETTY_FUNCTION__;
   Logger::log(LogLevel::ERROR, message);
 }
 

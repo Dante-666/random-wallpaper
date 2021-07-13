@@ -18,10 +18,10 @@ const string& Container::getURI() {
   if (_uriStore.empty()) {
     throw std::out_of_range("container is empty!!!");
   }
-	static auto it = _uriStore.begin();
-	if(it == _uriStore.end()) {
-		it = _uriStore.begin();
+	std::call_once(_flag, [&](){_it = _uriStore.begin();});
+	if(_it == _uriStore.end()) {
+		_it = _uriStore.begin();
 	}
-	Logger::LogDebug(*it);
-	return *(it++);
+	Logger::LogDebug(*_it);
+	return *(_it++);
 }

@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <cassert>
 #include <deque>
+#include <mutex>
 #include <random>
 #include <unordered_set>
 #include <string>
@@ -20,6 +21,8 @@ class Container {
   unordered_set<string> _uriStore;
   // For shuffle
   vector<string> _tempStore;
+  std::once_flag _flag;
+  unordered_set<string>::const_iterator _it;
 
 public:
   ~Container();

@@ -45,7 +45,6 @@ TEST(testContainer, repetition) {
 
   EXPECT_NO_THROW(tContainer.randomize());
 
-  #ifdef __linux__
   vector<string> outPassOne(3);
   for_each(outPassOne.begin(), outPassOne.end(),
            [&](const string &) { outPassOne.push_back(tContainer.getURI()); });
@@ -54,5 +53,4 @@ TEST(testContainer, repetition) {
            [&](const string &) { outPassTwo.push_back(tContainer.getURI()); });
 
   EXPECT_TRUE(outPassOne == outPassTwo);
-  #endif
 }

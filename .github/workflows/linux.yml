@@ -26,11 +26,15 @@ jobs:
       - uses: actions/checkout@v2
         with:
           submodules: recursive
-      - name: Build latest premake
-        run: |
-            git clone https://github.com/premake/premake-core
-            cd premake-core
-            make -f Bootstrap.mak linux CONFIG=release
+      # - name: Build latest premake
+      #   run: |
+      #       git clone https://github.com/premake/premake-core
+      #       cd premake-core
+      #       make -f Bootstrap.mak linux CONFIG=release
+
+            # premake-core/bin/release/premake5 gmake2 && cd build && make config=release -j
+      - name: Setup premake
+        uses: abel0b/setup-premake@8463d9a3b900273c6863825a886aaa3a129f7db6
       - name: Setup libcurl
         run: |
             sudo apt-get update
@@ -39,7 +43,7 @@ jobs:
         uses: MarkusJx/googletest-installer@v1.1
       - name: Configure and build
         run: |
-            premake-core/bin/release/premake5 gmake2 && cd build && make config=release -j
+            premake5 gmake2 && cd build && make config=release -j
       - name: Run tests
         run: |
             ./build/bin/Release/tests

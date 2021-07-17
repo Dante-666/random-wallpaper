@@ -11,8 +11,30 @@ UtilImpl &OSUtils::_impl = *(new Linux());
 
 // MSVC
 #if defined _WIN64 || defined _WIN32
+#include "WinUser.h"
 UtilImpl &OSUtils::_impl = *(new Windows());
 #endif
+
+const path OSUtils::replaceHome(const path sPath)
+try
+{
+  regex re("~");
+  auto homePrefix = regex_replace(sPath.string(), re,
+  #if defined _WIN64 || defined _WIN32
+  getenv("USERPROFILE"), 
+  #elif defined __linux__
+  getenv("HOME"),
+  #endif
+  format_first_only);
+  path homeP(homePrefix);
+  Logger::LogDebug(homePrefix);
+  (void)exists(homeP);
+  return homePrefix;
+}
+catch (const std::exception &e)
+{
+  Logger::LogError(e.what());
+}
 
 int UtilImpl::systemCall(const string &command)
 {
@@ -30,7 +52,7 @@ vector<string> Linux::fetchFiles(const path &dir)
 try
 {
   //TODO: get away with this in the constructor?
-  const auto &absPath = replaceHome(tmpWorkDir);
+  const auto &absPath = OSUtils::replaceHome(tmpWorkDir);
   if (not exists(absPath))
   {
     Logger::LogInfo("Creating shared directory " + absPath.string());
@@ -74,22 +96,6 @@ void Linux::updateWallpaper(const string &uri)
   stringstream command;
   command << "feh --bg-fill " << uri;
   systemCall(command.str().c_str());
-}
-
-const path Linux::replaceHome(const char *sPath)
-try
-{
-  string strPath(sPath);
-  regex re("~");
-  auto homePrefix = regex_replace(strPath, re, getenv("HOME"), format_first_only);
-  Logger::LogDebug(homePrefix);
-  exists(homePrefix);
-  return homePrefix;
-}
-catch (const std::exception &e)
-{
-  Logger::LogError(e.what());
-  return {};
 }
 
 Windows::~Windows(){};
@@ -143,7 +149,9 @@ catch (std::exception &e)
   return {};
 }
 
-void Windows::updateWallpaper(const string &uri) try {
+void Windows::updateWallpaper(const string &uri)
+try
+{
   using std::regex;
   using std::regex_search;
   using std::smatch;
@@ -151,24 +159,27 @@ void Windows::updateWallpaper(const string &uri) try {
   regex re("(.(jpg|png|jpeg)$)");
   smatch ext;
 
-  //TODO: Fix #45
-  auto updateHelper = [&] (const path& wallpaper) {
-    stringstream itemProp;
-    itemProp << "powershell.exe Set-ItemProperty -path 'HKCU:\\Control "
-                "Panel\\Desktop\\' -name Wallpaper -value \""
-             << wallpaper.string() << "\"";
-    Logger::LogDebug(itemProp.str());
-    systemCall(itemProp.str());
-    systemCall("timeout 2 /NOBREAK > NUL");
-    systemCall("powershell.exe rundll32.exe user32.dll, "
-               "UpdatePerUserSystemParameters");
+  auto updateHelper = [&](const path &wallpaper)
+  {
+#ifdef WINUSERAPI
+    BOOL retVal;
+    retVal = SystemParametersInfo(SPI_SETDESKWALLPAPER, 0,
+#ifdef UNICODE
+                                  (PVOID)wallpaper.wstring().c_str(),
+#else
+                                  (PVOID)wallpaper.string().c_str(),
+#endif
+                                  SPIF_UPDATEINIFILE | SPIF_SENDCHANGE);
+#endif
   };
 
-  if (exists(uri)) {
+  if (exists(uri))
+  {
     /* File is present on dist */
     updateHelper(uri);
   }
-  else if (regex_search(uri, ext, re)) {
+  else if (regex_search(uri, ext, re))
+  {
     /* download the file first and let this script transcode the image */
     Logger::LogInfo("Initializing download...");
     path tempFilePath(appDataLoc);
@@ -185,25 +196,13 @@ void Windows::updateWallpaper(const string &uri) try {
     CurlFetcher::writeImageToDisk(uri, tempFilePath.string());
     Logger::LogInfo("File written...");
     updateHelper(tempFilePath);
-  } else {
+  }
+  else
+  {
     Logger::LogError("Invalid file extension...");
   }
-} catch (const std::exception &e) {
-  Logger::LogError(e.what());
-}
-
-const path Windows::replaceHome(const char *sPath)
-try
-{
-  string strPath(sPath);
-  regex re("~");
-  auto homePrefix = regex_replace(strPath, re, getenv("USERPROFILE"), format_first_only);
-  Logger::LogDebug(homePrefix);
-  exists(homePrefix);
-  return homePrefix;
 }
 catch (const std::exception &e)
 {
   Logger::LogError(e.what());
-  return {};
 }

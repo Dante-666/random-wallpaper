@@ -41,8 +41,6 @@ public:
   virtual vector<string> fetchFiles(const path &dir) = 0;
   virtual int systemCall(const string &command);
   virtual void updateWallpaper(const string &uri) = 0;
-  // TODO: replace this later
-  virtual const path replaceHome(const char *sPath) = 0;
 };
 
 class OSUtils
@@ -57,17 +55,7 @@ public:
   }
   static void updateWallpaper(const string &uri) { _impl.updateWallpaper(uri); }
   /* converts shell ~ to absolute home path */
-  static const path replaceHome(const path sPath) try {
-    regex re("~");
-    auto homePrefix = regex_replace(sPath.string(), re, getenv("USERPROFILE"), format_first_only);
-    path homeP(homePrefix);
-    Logger::LogDebug(homePrefix);
-    exists(homeP);
-    return homePrefix;
-  } catch (const std::exception &e) {
-    Logger::LogError(e.what());
-    return {};
-  }
+  static const path replaceHome(const path sPath);
 };
 
 class Linux : public UtilImpl
@@ -76,7 +64,6 @@ class Linux : public UtilImpl
   virtual ~Linux() override;
   virtual vector<string> fetchFiles(const path &dir) override;
   virtual void updateWallpaper(const string &uri) override;
-  virtual const path replaceHome(const char *sPath) override;
 };
 
 class Windows : public UtilImpl
@@ -85,5 +72,4 @@ class Windows : public UtilImpl
   virtual ~Windows() override;
   virtual vector<string> fetchFiles(const path &dir) override;
   virtual void updateWallpaper(const string &uri) override;
-  virtual const path replaceHome(const char *sPath) override;
 };

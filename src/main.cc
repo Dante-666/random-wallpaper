@@ -3,6 +3,8 @@
 #include "os/interface.h"
 #include "parsers/xmlparser.h"
 
+#include "parsers/configparser.h"
+
 int main() {
   Logger::LogInfo("Initializing...");
 
@@ -11,7 +13,7 @@ int main() {
                "search.rss?q=flair_name%3A%22Desktop%22&restrict_sr=1";
   auto out = CurlFetcher::fetchResource(uri);
 
-  std::unique_ptr<Parser> parser;
+  std::unique_ptr<SchemaParser> parser;
   parser.reset(new XMLParser());
 
   Container container;

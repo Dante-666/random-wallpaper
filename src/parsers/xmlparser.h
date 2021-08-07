@@ -1,9 +1,9 @@
 #pragma once
 
-#include "parser.h"
+#include "schemaparser.h"
 #include "tinyxml.h"
 
-class XMLParser : public Parser {
+class XMLParser : public SchemaParser {
   regex _re;
 
 public:

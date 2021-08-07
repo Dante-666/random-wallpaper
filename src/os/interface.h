@@ -21,8 +21,10 @@ using std::vector;
 
 using std::filesystem::absolute;
 using std::filesystem::create_directories;
+using std::filesystem::directory_options;
 using std::filesystem::exists;
 using std::filesystem::path;
+using std::filesystem::recursive_directory_iterator;
 
 using std::regex;
 using std::regex_replace;
@@ -35,8 +37,6 @@ class access_denied : std::exception {
 class UtilImpl {
 public:
   virtual ~UtilImpl(){};
-  /* Provide a relative/absolute path here */
-  virtual vector<string> fetchFiles(const path &dir) = 0;
   virtual int systemCall(const string &command);
   virtual void updateWallpaper(const string &uri) = 0;
   virtual const path getConfFile() = 0;
@@ -47,19 +47,17 @@ class OSUtils {
 
 public:
   ~OSUtils() { delete &_impl; }
-  static vector<string> fetchFiles(const path &dir) {
-    return _impl.fetchFiles(replaceHome(dir));
-  }
-  static void updateWallpaper(const string &uri) { _impl.updateWallpaper(uri); }
-  static const path getConfFile() { return _impl.getConfFile(); }
-  /* converts shell ~ to absolute home path */
+  static vector<string> fetchFiles(const path &dir);
+  /* converts shell ~ to absolute home path.
+   * Can be used with windows as well.
+   */
   static const path replaceHome(const path sPath);
+  static void updateWallpaper(const string &uri) { _impl.updateWallpaper(uri); }
 };
 
 class Linux : public UtilImpl {
   static const char *tmpWorkDir;
   virtual ~Linux() override;
-  virtual vector<string> fetchFiles(const path &dir) override;
   virtual void updateWallpaper(const string &uri) override;
   virtual const path getConfFile() override;
 };
@@ -67,7 +65,6 @@ class Linux : public UtilImpl {
 class Windows : public UtilImpl {
   static const char *appDataLoc;
   virtual ~Windows() override;
-  virtual vector<string> fetchFiles(const path &dir) override;
   virtual void updateWallpaper(const string &uri) override;
   virtual const path getConfFile() override;
 };

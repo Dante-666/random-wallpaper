@@ -28,22 +28,13 @@ jobs:
           submodules: recursive
       - name: Setup premake
         uses: abel0b/setup-premake@8463d9a3b900273c6863825a886aaa3a129f7db6
-      - name: Cache dependencies
-        uses: actions/cache@v2
-        id: libcache
-        with:
-          path: |
-            /usr/include
-            /usr/lib
-          key: ${{ runner.os }}
       - name: Setup libcurl
-        if: steps.libcache.outputs.cache-hit != 'true'
         run: |
             sudo apt-get update
             sudo apt-get install libcurl4-openssl-dev
       - name: Install gtest
-        if: steps.libcache.outputs.cache-hit != 'true'
         uses: MarkusJx/googletest-installer@v1.1
+      - name:
       - name: Configure and build
         run: |
             premake5 gmake2 && cd build && make config=release -j

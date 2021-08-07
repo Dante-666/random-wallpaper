@@ -31,8 +31,8 @@ jobs:
         id: libcache
         with:
           path: |
-            D:/gtest
-            D:/cmake
+            D:\gtest
+            D:\cmake
           key: ${{ runner.os }}
       - name: Build cURL
         if: steps.libcache.outputs.cache-hit != 'true'
@@ -41,14 +41,14 @@ jobs:
             cd external\curl && mkdir builds && cd builds
             cmake -A x64 -DBUILD_SHARED_LIBS=OFF -DCURL_STATIC_CRT=ON -DENABLE_UNICODE=ON -DCURL_WINDOWS_SSPI=ON -DCMAKE_USE_SCHANNEL=ON ..
             cmake --build . --config Release
-            mkdir D:/cmake
-            cp /y lib/Release/libcurl.lib D:/cmake
+            mkdir D:\cmake
+            copy /y lib\Release\libcurl.lib D:\cmake
       - name: Copy cURL
         if: steps.libcache.outputs.cache-hit == 'true'
         shell: cmd
         run: |
           mkdir external\curl\builds\lib\Release
-          cp D:/cmake/libcurl.lib external\curl\builds\lib\Release
+          copy D:\cmake\libcurl.lib external\curl\builds\lib\Release
       - name: Add msbuild to PATH
         uses: microsoft/setup-msbuild@v1.0.2
       - name: Install gtest

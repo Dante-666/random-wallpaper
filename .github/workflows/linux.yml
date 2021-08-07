@@ -34,7 +34,6 @@ jobs:
             sudo apt-get install libcurl4-openssl-dev
       - name: Install gtest
         uses: MarkusJx/googletest-installer@v1.1
-      - name:
       - name: Configure and build
         run: |
             premake5 gmake2 && cd build && make config=release -j

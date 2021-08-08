@@ -35,7 +35,6 @@ jobs:
       - name: Setup premake
         uses: abel0b/setup-premake@8463d9a3b900273c6863825a886aaa3a129f7db6
       - name: Setup libcurl
-        if: steps.libcache.outputs.cache-hit != 'true'
         run: |
             sudo apt-get update
             sudo apt-get install libcurl4-openssl-dev
@@ -45,18 +44,12 @@ jobs:
       - name: Cache artifacts
         if: steps.libcache.outputs.cache-hit != 'true'
         run: |
-          sudo mkdir -p /opt/cache/curl/lib
           sudo mkdir -p /opt/cache/gtest/lib
-          echo $(sudo find / -name libcurl.so)
-          echo $(sudo find / -name curl.h)
-          sudo cp -R /usr/include/curl /opt/cache/curl
-          sudo cp /usr/lib/x86_64-linux-gnu/libcurl* /opt/cache/curl/lib
           sudo cp -R /usr/include/gtest /opt/cache/gtest
           sudo cp /usr/lib/libgtest* /opt/cache/gtest/lib
       - name: Restore cache
         if: steps.libcache.outputs.cache-hit == 'true'
         run: |
-          sudo cp /opt/cache/curl/lib/libcurl* /usr/lib/x86_64-linux-gnu
           sudo cp -R /opt/cache/gtest/gtest /usr/include
           sudo cp /opt/cache/gtest/lib/*.a /usr/lib
       - name: Configure and build

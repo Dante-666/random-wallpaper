@@ -47,6 +47,12 @@ jobs:
         run: |
           sudo mkdir -p /opt/cache/curl/lib
           sudo mkdir -p /opt/cache/gtest/lib
+          sudo ls /usr/include
+          sudo ls /usr/local/include
+          sudo ls /usr/local/lib/x86_64-linux-gnu
+          echo $(sudo ls /usr/include)
+          echo $(sudo ls /usr/local/include)
+          echo $(sudo ls /usr/local/lib/x86_64-linux-gnu)
           sudo cp -R /usr/include/curl /opt/cache/curl
           sudo cp /usr/lib/x86_64-linux-gnu/libcurl* /opt/cache/curl/lib
           sudo cp -R /usr/include/gtest /opt/cache/gtest

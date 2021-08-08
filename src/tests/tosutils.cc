@@ -7,7 +7,6 @@
 using std::string_view;
 using std::unordered_set;
 
-#ifdef __linux__
 TEST(testFetchFile, os_independent) {
   auto list = OSUtils::fetchFiles("test_resource");
 
@@ -26,4 +25,3 @@ TEST(testFetchFile, os_independent) {
 	// Test for filters to only work on image files
 	EXPECT_TRUE(slist.find("test_resource/tos/a.txt") == slist.end());
 }
-#endif

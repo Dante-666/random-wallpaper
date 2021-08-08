@@ -30,7 +30,7 @@ jobs:
         uses: actions/cache@v2
         id: libcache
         with:
-          path: /opt/cache 
+          path: /opt/cache
           key: ${{ runner.os }}
       - name: Setup premake
         uses: abel0b/setup-premake@8463d9a3b900273c6863825a886aaa3a129f7db6
@@ -45,16 +45,17 @@ jobs:
       - name: Cache artifacts
         if: steps.libcache.outputs.cache-hit != 'true'
         run: |
-          sudo mkdir -p /opt/cache/gtest/include /opt/cache/gtest/lib
-          sudo cp /usr/lib/libcurl.so /opt/cache
-          sudo cp -R /usr/include/gtest /opt/cache/gtest/include
-          sudo cp /usr/lib/libgtest.a /opt/cache/gtest/lib
-          sudo cp /usr/lib/libgtest_main.a /opt/cache/gtest/lib
+          sudo mkdir -p /opt/cache/curl/lib
+          sudo mkdir -p /opt/cache/gtest/lib
+          sudo cp -R /usr/include/curl /opt/cache/curl
+          sudo cp /usr/lib/x86_64-linux-gnu/libcurl* /opt/cache/curl/lib
+          sudo cp -R /usr/include/gtest /opt/cache/gtest
+          sudo cp /usr/lib/libgtest* /opt/cache/gtest/lib
       - name: Restore cache
         if: steps.libcache.outputs.cache-hit == 'true'
         run: |
-          sudo cp /opt/cache/libcurl.so /usr/lib
-          sudo cp -R /opt/cache/gtest/include/gtest /usr/include
+          sudo cp /opt/cache/curl/lib/libcurl* /usr/lib/x86_64-linux-gnu
+          sudo cp -R /opt/cache/gtest/gtest /usr/include
           sudo cp /opt/cache/gtest/lib/*.a /usr/lib
       - name: Configure and build
         run: |

@@ -2,6 +2,7 @@
 
 #include <logutil/logger.h>
 
+#ifdef __linux__
 TEST(testLogger, consoleLogging) {
   string matchDebug =
       "[DEBUG] : testLogger_consoleLogging_Test::TestBody -> consoleDebug";
@@ -98,3 +99,4 @@ TEST(testLogger, consoleLogging) {
   Logger::SetLogLevel(LogLevel::DEBUG);
 #endif
 }
+#endif

@@ -1,10 +1,12 @@
 #pragma once
 
+#include <cassert>
 #include <chrono>
-#include <ratio>
-#include <iostream>
 #include <iomanip>
+#include <iostream>
 #include <memory>
+#include <ratio>
+#include <regex>
 #include <type_traits>
 
 using std::cerr;
@@ -21,40 +23,59 @@ using std::chrono::zoned_time;
 using std::chrono::seconds;
 using std::chrono::system_clock;
 
-using std::unique_ptr;
 using std::make_unique;
+using std::unique_ptr;
+
+using std::regex;
+using std::regex_search;
+using std::smatch;
 
 #undef DEBUG
 #undef ERROR
 
-enum class LogLevel
-{
-  DEBUG = 0, INFO = 1, WARN = 2, ERROR = 3
-};
+enum class LogLevel { DEBUG = 0, INFO = 1, WARN = 2, ERROR = 3 };
 
-class LoggerImpl
-{
+class LoggerImpl {
   virtual void _log(const string &message) = 0;
   unique_ptr<LoggerImpl> _next;
+
 public:
   void log(const string &message);
 };
 
-class ConsoleLogger : public LoggerImpl
-{
+class ConsoleLogger : public LoggerImpl {
   virtual void _log(const string &message) override;
 };
 
-class Logger
-{
+// TODO: FileLogger later
+
+class BaseLogger {
+  static regex re;
   static unique_ptr<LoggerImpl> _impl;
   static LogLevel _level;
-  static void log(const LogLevel &level, const string &message);
+  static void log(const LogLevel &level, const string &message,
+                  const string &function);
+
 public:
-  static void LogDebug(const string& message);
-  static void LogInfo(const string& message);
-  static void LogWarn(const string& message);
-  static void LogError(const string& message);
+  static void setLogLevel(const LogLevel &level);
+  static void logDebug(const string &message, const string &function);
+  static void logInfo(const string &message, const string &function);
+  static void logWarn(const string &message, const string &function);
+  static void logError(const string &message, const string &function);
 };
 
-//TODO: FileLogger later
+namespace Logger {
+using BaseLogger = BaseLogger;
+#define SetLogLevel(LVL) BaseLogger::setLogLevel(LVL)
+#if defined __GNUC__
+#define LogDebug(MSG) BaseLogger::logDebug(MSG, __PRETTY_FUNCTION__)
+#define LogInfo(MSG) BaseLogger::logInfo(MSG, __PRETTY_FUNCTION__)
+#define LogWarn(MSG) BaseLogger::logWarn(MSG, __PRETTY_FUNCTION__)
+#define LogError(MSG) BaseLogger::logError(MSG, __PRETTY_FUNCTION__)
+#else
+#define LogDebug(MSG) BaseLogger::logDebug(MSG, "TODO::TODO")
+#define LogInfo(MSG) BaseLogger::logInfo(MSG, "TODO::TODO")
+#define LogWarn(MSG) BaseLogger::logWarn(MSG, "TODO::TODO")
+#define LogError(MSG) BaseLogger::logError(MSG, "TODO::TODO")
+#endif
+} // namespace Logger

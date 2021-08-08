@@ -34,12 +34,12 @@ const path OSUtils::replaceHome(const path sPath) try {
 }
 
 vector<string> OSUtils::fetchFiles(const path &dir) try {
-  auto fullDir = replaceHome(dir);
+  const auto &fullDir = replaceHome(dir);
   vector<string> output;
 
   for (auto &fullPath : recursive_directory_iterator(
            fullDir, directory_options::skip_permission_denied)) {
-    auto ext = fullPath.path().extension();
+    const auto &ext = fullPath.path().extension();
     if (ext == ".png" || ext == ".jpg" || ext == ".jpeg") {
       Logger::LogDebug(fullPath.path().string());
       output.emplace_back(absolute(fullPath.path()).string());

@@ -19,18 +19,18 @@ TEST(testLogger, consoleLogging) {
     stringstream buffer;
     std::cout<<"consoleLogging started2"<<std::endl;
     std::cout.rdbuf(buffer.rdbuf());
-    std::cout<<"consoleLogging started3"<<std::endl;
+    std::cerr<<"consoleLogging started3"<<std::endl;
 
     Logger::SetLogLevel(LogLevel::DEBUG);
-    std::cout<<"consoleLogging started4"<<std::endl;
+    std::cerr<<"consoleLogging started4"<<std::endl;
     Logger::LogDebug("consoleDebug");
-    std::cout<<"consoleLogging started5"<<std::endl;
+    std::cerr<<"consoleLogging started5"<<std::endl;
     Logger::LogInfo("consoleInfo");
     Logger::LogWarn("consoleWarn");
     Logger::LogError("consoleError");
 
     std::cout.rdbuf(backup);
-    std::cout<<"consoleLogging started6"<<std::endl;
+    std::cerr<<"consoleLogging started6"<<std::endl;
     const auto &output = buffer.str();
     EXPECT_TRUE(output.find(matchDebug) != string::npos);
     EXPECT_TRUE(output.find(matchInfo) != string::npos);

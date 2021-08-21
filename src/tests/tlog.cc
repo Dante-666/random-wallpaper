@@ -2,7 +2,7 @@
 
 #include <logutil/logger.h>
 
-#ifdef __linux__
+#if defined __linux__ || __APPLE__
 TEST(testLogger, consoleLogging) {
   string matchDebug =
       "[DEBUG] : testLogger_consoleLogging_Test::TestBody -> consoleDebug";
@@ -25,7 +25,7 @@ TEST(testLogger, consoleLogging) {
     Logger::LogError("consoleError");
 
     std::cout.rdbuf(backup);
-#ifdef __GNUC__
+#if defined __GNUC__ || __APPLE_CC__
     const auto &output = buffer.str();
     EXPECT_TRUE(output.find(matchDebug) != string::npos);
     EXPECT_TRUE(output.find(matchInfo) != string::npos);
@@ -45,7 +45,7 @@ TEST(testLogger, consoleLogging) {
     Logger::LogError("consoleError");
 
     std::cout.rdbuf(backup);
-#ifdef __GNUC__
+#if defined __GNUC__ || __APPLE_CC__
     const auto &output = buffer.str();
     EXPECT_FALSE(output.find(matchDebug) != string::npos);
     EXPECT_TRUE(output.find(matchInfo) != string::npos);
@@ -65,7 +65,7 @@ TEST(testLogger, consoleLogging) {
     Logger::LogError("consoleError");
 
     std::cout.rdbuf(backup);
-#ifdef __GNUC__
+#if defined __GNUC__ || __APPLE_CC__
     const auto &output = buffer.str();
     EXPECT_FALSE(output.find(matchDebug) != string::npos);
     EXPECT_FALSE(output.find(matchInfo) != string::npos);
@@ -85,7 +85,7 @@ TEST(testLogger, consoleLogging) {
     Logger::LogError("consoleError");
 
     std::cout.rdbuf(backup);
-#ifdef __GNUC__
+#if defined __GNUC__ || __APPLE_CC__
     const auto &output = buffer.str();
     EXPECT_FALSE(output.find(matchDebug) != string::npos);
     EXPECT_FALSE(output.find(matchInfo) != string::npos);

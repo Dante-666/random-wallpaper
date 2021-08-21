@@ -15,12 +15,17 @@ UtilImpl &OSUtils::_impl = *(new Linux());
 UtilImpl &OSUtils::_impl = *(new Windows());
 #endif
 
+// Clang
+#if defined __APPLE__
+UtilImpl &OSUtils::_impl = *(new Mac());
+#endif
+
 const path OSUtils::replaceHome(const path sPath) try {
   regex re("~");
   auto homePrefix = regex_replace(sPath.string(), re,
 #if defined _WIN64 || defined _WIN32
                                   getenv("USERPROFILE"),
-#elif defined __linux__
+#elif defined __linux__ || defined __APPLE__
                                   getenv("HOME"),
 #endif
                                   format_first_only);
@@ -114,4 +119,10 @@ void Windows::updateWallpaper(const string &uri) try {
   }
 } catch (const std::exception &e) {
   Logger::LogError(e.what());
+}
+
+Mac::~Mac(){};
+
+void Mac::updateWallpaper(const string &uri) {
+  Logger::LogDebug("Doing nothing");
 }

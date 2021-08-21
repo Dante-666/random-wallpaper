@@ -2,7 +2,7 @@
 
 #include <logutil/logger.h>
 
-#if defined __linux__ || __APPLE__
+#if not defined _WIN64 && _WIN32
 TEST(testLogger, consoleLogging) {
   string matchDebug =
       "[DEBUG] : testLogger_consoleLogging_Test::TestBody -> consoleDebug";
@@ -14,10 +14,8 @@ TEST(testLogger, consoleLogging) {
       "[ERROR] : testLogger_consoleLogging_Test::TestBody -> consoleError";
 
   {
-    auto *backup = std::cout.rdbuf();
     stringstream buffer;
-    std::cout.rdbuf(buffer.rdbuf());
-
+    auto *backup = std::cout.rdbuf(buffer.rdbuf());
     Logger::SetLogLevel(LogLevel::DEBUG);
     Logger::LogDebug("consoleDebug");
     Logger::LogInfo("consoleInfo");
@@ -25,19 +23,16 @@ TEST(testLogger, consoleLogging) {
     Logger::LogError("consoleError");
 
     std::cout.rdbuf(backup);
-#if defined __GNUC__ || __APPLE_CC__
     const auto &output = buffer.str();
     EXPECT_TRUE(output.find(matchDebug) != string::npos);
     EXPECT_TRUE(output.find(matchInfo) != string::npos);
     EXPECT_TRUE(output.find(matchWarn) != string::npos);
     EXPECT_TRUE(output.find(matchError) != string::npos);
-#endif
   }
 
   {
-    auto *backup = std::cout.rdbuf();
     stringstream buffer;
-    std::cout.rdbuf(buffer.rdbuf());
+    auto *backup = std::cout.rdbuf(buffer.rdbuf());
     Logger::SetLogLevel(LogLevel::INFO);
     Logger::LogDebug("consoleDebug");
     Logger::LogInfo("consoleInfo");
@@ -45,19 +40,16 @@ TEST(testLogger, consoleLogging) {
     Logger::LogError("consoleError");
 
     std::cout.rdbuf(backup);
-#if defined __GNUC__ || __APPLE_CC__
     const auto &output = buffer.str();
     EXPECT_FALSE(output.find(matchDebug) != string::npos);
     EXPECT_TRUE(output.find(matchInfo) != string::npos);
     EXPECT_TRUE(output.find(matchWarn) != string::npos);
     EXPECT_TRUE(output.find(matchError) != string::npos);
-#endif
   }
 
   {
-    auto *backup = std::cout.rdbuf();
     stringstream buffer;
-    std::cout.rdbuf(buffer.rdbuf());
+    auto *backup = std::cout.rdbuf(buffer.rdbuf());
     Logger::SetLogLevel(LogLevel::WARN);
     Logger::LogDebug("consoleDebug");
     Logger::LogInfo("consoleInfo");
@@ -65,19 +57,16 @@ TEST(testLogger, consoleLogging) {
     Logger::LogError("consoleError");
 
     std::cout.rdbuf(backup);
-#if defined __GNUC__ || __APPLE_CC__
     const auto &output = buffer.str();
     EXPECT_FALSE(output.find(matchDebug) != string::npos);
     EXPECT_FALSE(output.find(matchInfo) != string::npos);
     EXPECT_TRUE(output.find(matchWarn) != string::npos);
     EXPECT_TRUE(output.find(matchError) != string::npos);
-#endif
   }
 
   {
-    auto *backup = std::cout.rdbuf();
     stringstream buffer;
-    std::cout.rdbuf(buffer.rdbuf());
+    auto *backup = std::cout.rdbuf(buffer.rdbuf());
     Logger::SetLogLevel(LogLevel::ERROR);
     Logger::LogDebug("consoleDebug");
     Logger::LogInfo("consoleInfo");
@@ -85,13 +74,11 @@ TEST(testLogger, consoleLogging) {
     Logger::LogError("consoleError");
 
     std::cout.rdbuf(backup);
-#if defined __GNUC__ || __APPLE_CC__
     const auto &output = buffer.str();
     EXPECT_FALSE(output.find(matchDebug) != string::npos);
     EXPECT_FALSE(output.find(matchInfo) != string::npos);
     EXPECT_FALSE(output.find(matchWarn) != string::npos);
     EXPECT_TRUE(output.find(matchError) != string::npos);
-#endif
   }
 #ifdef NDEBUG
   Logger::SetLogLevel(LogLevel::WARN);

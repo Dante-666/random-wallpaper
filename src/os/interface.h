@@ -65,3 +65,8 @@ class Windows : public UtilImpl {
   virtual ~Windows() override;
   virtual void updateWallpaper(const string &uri) override;
 };
+
+class Mac : public UtilImpl {
+  virtual ~Mac() override;
+  virtual void updateWallpaper(const string &uri) override;
+};

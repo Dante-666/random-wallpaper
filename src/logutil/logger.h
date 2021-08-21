@@ -7,6 +7,7 @@
 #include <memory>
 #include <ratio>
 #include <regex>
+#include <sstream>
 #include <type_traits>
 
 using std::cerr;
@@ -40,11 +41,15 @@ class LoggerImpl {
   unique_ptr<LoggerImpl> _next;
 
 public:
+  virtual ~LoggerImpl() = default;
   void log(const string &message);
 };
 
 class ConsoleLogger : public LoggerImpl {
   virtual void _log(const string &message) override;
+
+public:
+  virtual ~ConsoleLogger() override = default;
 };
 
 // TODO: FileLogger later
@@ -67,12 +72,12 @@ public:
 namespace Logger {
 using BaseLogger = BaseLogger;
 #define SetLogLevel(LVL) BaseLogger::setLogLevel(LVL)
-#if defined __GNUC__
+#if defined __GNUC__ || __APPLE_CC__
 #define LogDebug(MSG) BaseLogger::logDebug(MSG, __PRETTY_FUNCTION__)
 #define LogInfo(MSG) BaseLogger::logInfo(MSG, __PRETTY_FUNCTION__)
 #define LogWarn(MSG) BaseLogger::logWarn(MSG, __PRETTY_FUNCTION__)
 #define LogError(MSG) BaseLogger::logError(MSG, __PRETTY_FUNCTION__)
-#else
+#elif defined _WIN64 || __WIN32
 #define LogDebug(MSG) BaseLogger::logDebug(MSG, "TODO::TODO")
 #define LogInfo(MSG) BaseLogger::logInfo(MSG, "TODO::TODO")
 #define LogWarn(MSG) BaseLogger::logWarn(MSG, "TODO::TODO")

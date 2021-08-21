@@ -7,7 +7,11 @@ LogLevel BaseLogger::_level = LogLevel::WARN;
 LogLevel BaseLogger::_level = LogLevel::DEBUG;
 #endif
 
+#if defined __linux__ || __APPLE__
 regex BaseLogger::re("\\s((\\w+::)?(\\w+))\\(.*\\)$");
+#elif defined _WIN64 || _WIN32
+regex BaseLogger::re("\\s((\\w+::)?(\\w+))\\(.*\\)$");
+#endif
 
 ostream &operator<<(ostream &stream, const LogLevel &level) {
   switch (level) {
@@ -32,11 +36,11 @@ void BaseLogger::log(const LogLevel &level, const string &message,
   if (level >= _level) {
     stringstream _message;
     // TODO: Disable C++20 for linux now since zoned_time isn't available
-#ifdef __linux__
+#if defined __linux__ || __APPLE__
     auto time = system_clock::to_time_t(system_clock::now());
     string str_time(std::ctime(&time));
     _message << str_time.substr(0, str_time.length() - 1)
-#else
+#elif defined _WIN64 || _WIN32
     _message << zoned_time {
       current_zone(), floor<seconds>(system_clock::now())
     }

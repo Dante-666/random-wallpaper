@@ -2,6 +2,7 @@
 
 [![Action Status](https://github.com/Dante-666/random-wallpaper/workflows/linux/badge.svg)](https://github.com/Dante-666/random-wallpaper/actions)
 [![Action Status](https://github.com/Dante-666/random-wallpaper/workflows/windows/badge.svg)](https://github.com/Dante-666/random-wallpaper/actions)
+[![Action Status](https://github.com/Dante-666/random-wallpaper/workflows/mac/badge.svg)](https://github.com/Dante-666/random-wallpaper/actions)
 
 Cycle through wallpapers from configurable source(s)
 
@@ -23,9 +24,9 @@ Then run premake for the required platform. Make sure you are using the latest v
 
 #### Dependencies
 
-You need these external dependencies to make your life easier: **feh** & **curl**. Depending on the OS's package management, you may have to look for exact names. An example for Arch Linux is given below,
+You need these external dependencies to make your life easier: **feh** & **curl** and **google-test**. Depending on the OS's package management, you may have to look for exact names. An example for Arch Linux is given below,
 
-      sudo pacman -Syy feh curl
+      sudo pacman -Syy feh curl gtest
 
 Curl is included as a submodule for Windows and if you so choose, you can build it locally and link it with the executable.
 
@@ -35,7 +36,7 @@ With premake configured for **gmake2**, run the following command.
 
 ### Mac
 
-The build steps are exactly the same as linux.
+The build steps are exactly the same as linux. If homebrew is setup, we need to install the above dependencies. Using make to build this is more sensible since premake5 doesn't support newer versions of Xcode too well.
 
 TODO: background setter workflow 
 

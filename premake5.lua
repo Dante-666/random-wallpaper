@@ -18,15 +18,15 @@ workspace "random-wallpaper"
 		libdirs { "build/bin/Release" }
 	filter {}
 	-- curl is not present by default for win, for a x64 OS, do this
-  -- mkdir builds && cd builds
-  -- cmake -A x64 -DBUILD_SHARED_LIBS=OFF -DCURL_STATIC_CRT=ON -DENABLE_UNICODE=ON ..
-  -- cmake --build . --config [Release|Debug]
+    -- mkdir builds && cd builds
+    -- cmake -A x64 -DBUILD_SHARED_LIBS=OFF -DCURL_STATIC_CRT=ON -DENABLE_UNICODE=ON ..
+    -- cmake --build . --config [Release|Debug]
 	filter "system:windows"
 		cppdialect "C++20"
 		includedirs {"external/curl/include", "D:/gtest/include"}
 		libdirs { "external/curl/builds/lib/Release" }
 		links { "libcurl.lib", "wldap32.lib", "Crypt32.lib",
-						"ws2_32.lib", "winmm.lib", "Normaliz.lib" }
+                "ws2_32.lib", "winmm.lib", "Normaliz.lib" }
 		staticruntime "on"
 		buildoptions { "-DCURL_STATICLIB"}
 	filter {}
@@ -46,11 +46,11 @@ project "random-wallpaper"
 
 	-- tinyxml
 	files { "external/tinyxml/*.h", "external/tinyxml/*.cpp"}
-  files { "src/**.h", "src/**.cc" }
+    files { "src/**.h", "src/**.cc" }
 	removefiles { "src/main.cc" }
 	removefiles { "src/tests/*" }
 	removefiles { "external/tinyxml/echo.cpp", 
-								"external/tinyxml/xmltest.cpp" }
+				  "external/tinyxml/xmltest.cpp" }
 	
 	buildoptions { "-DTIXML_USE_STL" }
 
@@ -84,6 +84,10 @@ project "tests"
 		links { "gtestd" }
 	filter {}
 
-	filter "system:linux or system:macosx"
+	filter "system:linux"
 		links { "gtest", "random-wallpaper", "pthread" }
+	filter {}
+
+    filter "system:macosx"
+		links { "gtest", "random-wallpaper" }
 	filter {}

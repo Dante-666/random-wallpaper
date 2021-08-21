@@ -33,7 +33,11 @@ stringstream MemChunk::get_string() {
     stringstream stream{this->memory};
     return stream;
   } else
+#ifdef __APPLE__
+    return stringstream{};
+#else
     return {};
+#endif
 }
 
 stringstream CurlFetcher::fetchResource(const string &uri) {
@@ -62,7 +66,11 @@ stringstream CurlFetcher::fetchResource(const string &uri) {
   }
   // TODO: error handling
   Logger::LogError("Couldn't obtain handle...");
-  return {};
+#ifdef __APPLE__
+    return stringstream{};
+#else
+    return {};
+#endif
 }
 
 void CurlFetcher::writeImageToDisk(const string &uri, const string &file) {

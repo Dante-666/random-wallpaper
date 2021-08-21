@@ -77,10 +77,10 @@ using BaseLogger = BaseLogger;
 #define LogInfo(MSG) BaseLogger::logInfo(MSG, __PRETTY_FUNCTION__)
 #define LogWarn(MSG) BaseLogger::logWarn(MSG, __PRETTY_FUNCTION__)
 #define LogError(MSG) BaseLogger::logError(MSG, __PRETTY_FUNCTION__)
-#elif defined _WIN64 || __WIN32
-#define LogDebug(MSG) BaseLogger::logDebug(MSG, "TODO::TODO")
-#define LogInfo(MSG) BaseLogger::logInfo(MSG, "TODO::TODO")
-#define LogWarn(MSG) BaseLogger::logWarn(MSG, "TODO::TODO")
-#define LogError(MSG) BaseLogger::logError(MSG, "TODO::TODO")
+#elif defined _WIN64 || _WIN32
+#define LogDebug(MSG) BaseLogger::logDebug(MSG,  __FUNCSIG__)
+#define LogInfo(MSG) BaseLogger::logInfo(MSG,  __FUNCSIG__)
+#define LogWarn(MSG) BaseLogger::logWarn(MSG,  __FUNCSIG__)
+#define LogError(MSG) BaseLogger::logError(MSG,  __FUNCSIG__)
 #endif
 } // namespace Logger

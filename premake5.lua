@@ -26,7 +26,7 @@ workspace "random-wallpaper"
 		includedirs {"external/curl/include", "D:/gtest/include"}
 		libdirs { "external/curl/builds/lib/Release" }
 		links { "libcurl.lib", "wldap32.lib", "Crypt32.lib",
-                "ws2_32.lib", "winmm.lib", "Normaliz.lib" }
+            "ws2_32.lib", "winmm.lib", "Normaliz.lib" }
 		staticruntime "on"
 		buildoptions { "-DCURL_STATICLIB"}
 	filter {}

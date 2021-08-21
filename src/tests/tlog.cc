@@ -13,18 +13,18 @@ TEST(testLogger, consoleLogging) {
       "[ERROR] : testLogger_consoleLogging_Test::TestBody -> consoleError";
 
   {
-    std::cout<<"consoleLogging started"<<std::endl;
     auto *backup = std::cout.rdbuf();
-    std::cout<<"consoleLogging started1"<<std::endl;
     stringstream buffer;
+    buffer << "test String";
     std::cout<<"consoleLogging started2"<<std::endl;
     std::cout.rdbuf(buffer.rdbuf());
-    std::cerr<<"consoleLogging started3"<<std::endl;
+    std::cerr<<buffer.str()<<std::endl;
 
     Logger::SetLogLevel(LogLevel::DEBUG);
     std::cerr<<"consoleLogging started4"<<std::endl;
     Logger::LogDebug("consoleDebug");
     std::cerr<<"consoleLogging started5"<<std::endl;
+    std::cerr<<buffer.str()<<std::endl;
     Logger::LogInfo("consoleInfo");
     Logger::LogWarn("consoleWarn");
     Logger::LogError("consoleError");

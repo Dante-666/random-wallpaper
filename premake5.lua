@@ -77,12 +77,6 @@ project "tests"
 		links { "random-wallpaper" }
 	filter {}
 
-	--     filter { "system:macosx" }
-	-- 	includedirs {"/usr/local/include"}
-	-- 	libdirs { "/usr/local/lib" }
-	-- 	links { "random-wallpaper" }
-	-- filter {}
-
 	filter { "system:windows", "configurations:Release" }
 		links { "gtest" }
 	filter {}
@@ -90,6 +84,10 @@ project "tests"
 		links { "gtestd" }
 	filter {}
 
-	filter "system:linux or system:macosx"
-		links { "gtest", "random-wallpaper"} --, "pthread" }
+	filter "system:linux"
+		links { "gtest", "random-wallpaper", "pthread" }
+	filter {}
+
+    filter "system:macosx"
+		links { "gtest", "random-wallpaper" }
 	filter {}

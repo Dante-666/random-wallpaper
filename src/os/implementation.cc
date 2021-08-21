@@ -66,10 +66,12 @@ const char *access_denied::what() const noexcept {
 
 Linux::~Linux(){};
 
-void Linux::updateWallpaper(const string &uri) {
+void Linux::updateWallpaper(const string &uri) try {
   stringstream command;
   command << "feh --bg-fill " << uri;
   systemCall(command.str().c_str());
+} catch (const std::exception &e) {
+  Logger::LogError(e.what());
 }
 
 Windows::~Windows(){};

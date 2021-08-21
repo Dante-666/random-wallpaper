@@ -13,6 +13,7 @@ TEST(testLogger, consoleLogging) {
       "[ERROR] : testLogger_consoleLogging_Test::TestBody -> consoleError";
 
   {
+    std::cout<<"consoleLogging started"<<std::endl;
     auto *backup = std::cout.rdbuf();
     stringstream buffer;
     std::cout.rdbuf(buffer.rdbuf());
@@ -30,63 +31,63 @@ TEST(testLogger, consoleLogging) {
     EXPECT_TRUE(output.find(matchWarn) != string::npos);
     EXPECT_TRUE(output.find(matchError) != string::npos);
   }
-
-  {
-    auto *backup = std::cout.rdbuf();
-    stringstream buffer;
-    std::cout.rdbuf(buffer.rdbuf());
-    Logger::SetLogLevel(LogLevel::INFO);
-    Logger::LogDebug("consoleDebug");
-    Logger::LogInfo("consoleInfo");
-    Logger::LogWarn("consoleWarn");
-    Logger::LogError("consoleError");
-
-    std::cout.rdbuf(backup);
-    const auto &output = buffer.str();
-    EXPECT_FALSE(output.find(matchDebug) != string::npos);
-    EXPECT_TRUE(output.find(matchInfo) != string::npos);
-    EXPECT_TRUE(output.find(matchWarn) != string::npos);
-    EXPECT_TRUE(output.find(matchError) != string::npos);
-  }
-
-  {
-    auto *backup = std::cout.rdbuf();
-    stringstream buffer;
-    std::cout.rdbuf(buffer.rdbuf());
-    Logger::SetLogLevel(LogLevel::WARN);
-    Logger::LogDebug("consoleDebug");
-    Logger::LogInfo("consoleInfo");
-    Logger::LogWarn("consoleWarn");
-    Logger::LogError("consoleError");
-
-    std::cout.rdbuf(backup);
-    const auto &output = buffer.str();
-    EXPECT_FALSE(output.find(matchDebug) != string::npos);
-    EXPECT_FALSE(output.find(matchInfo) != string::npos);
-    EXPECT_TRUE(output.find(matchWarn) != string::npos);
-    EXPECT_TRUE(output.find(matchError) != string::npos);
-  }
-
-  {
-    auto *backup = std::cout.rdbuf();
-    stringstream buffer;
-    std::cout.rdbuf(buffer.rdbuf());
-    Logger::SetLogLevel(LogLevel::ERROR);
-    Logger::LogDebug("consoleDebug");
-    Logger::LogInfo("consoleInfo");
-    Logger::LogWarn("consoleWarn");
-    Logger::LogError("consoleError");
-
-    std::cout.rdbuf(backup);
-    const auto &output = buffer.str();
-    EXPECT_FALSE(output.find(matchDebug) != string::npos);
-    EXPECT_FALSE(output.find(matchInfo) != string::npos);
-    EXPECT_FALSE(output.find(matchWarn) != string::npos);
-    EXPECT_TRUE(output.find(matchError) != string::npos);
-  }
-#ifdef NDEBUG
-  Logger::SetLogLevel(LogLevel::WARN);
-#else
-  Logger::SetLogLevel(LogLevel::DEBUG);
-#endif
 }
+//   {
+//     auto *backup = std::cout.rdbuf();
+//     stringstream buffer;
+//     std::cout.rdbuf(buffer.rdbuf());
+//     Logger::SetLogLevel(LogLevel::INFO);
+//     Logger::LogDebug("consoleDebug");
+//     Logger::LogInfo("consoleInfo");
+//     Logger::LogWarn("consoleWarn");
+//     Logger::LogError("consoleError");
+
+//     std::cout.rdbuf(backup);
+//     const auto &output = buffer.str();
+//     EXPECT_FALSE(output.find(matchDebug) != string::npos);
+//     EXPECT_TRUE(output.find(matchInfo) != string::npos);
+//     EXPECT_TRUE(output.find(matchWarn) != string::npos);
+//     EXPECT_TRUE(output.find(matchError) != string::npos);
+//   }
+
+//   {
+//     auto *backup = std::cout.rdbuf();
+//     stringstream buffer;
+//     std::cout.rdbuf(buffer.rdbuf());
+//     Logger::SetLogLevel(LogLevel::WARN);
+//     Logger::LogDebug("consoleDebug");
+//     Logger::LogInfo("consoleInfo");
+//     Logger::LogWarn("consoleWarn");
+//     Logger::LogError("consoleError");
+
+//     std::cout.rdbuf(backup);
+//     const auto &output = buffer.str();
+//     EXPECT_FALSE(output.find(matchDebug) != string::npos);
+//     EXPECT_FALSE(output.find(matchInfo) != string::npos);
+//     EXPECT_TRUE(output.find(matchWarn) != string::npos);
+//     EXPECT_TRUE(output.find(matchError) != string::npos);
+//   }
+
+//   {
+//     auto *backup = std::cout.rdbuf();
+//     stringstream buffer;
+//     std::cout.rdbuf(buffer.rdbuf());
+//     Logger::SetLogLevel(LogLevel::ERROR);
+//     Logger::LogDebug("consoleDebug");
+//     Logger::LogInfo("consoleInfo");
+//     Logger::LogWarn("consoleWarn");
+//     Logger::LogError("consoleError");
+
+//     std::cout.rdbuf(backup);
+//     const auto &output = buffer.str();
+//     EXPECT_FALSE(output.find(matchDebug) != string::npos);
+//     EXPECT_FALSE(output.find(matchInfo) != string::npos);
+//     EXPECT_FALSE(output.find(matchWarn) != string::npos);
+//     EXPECT_TRUE(output.find(matchError) != string::npos);
+//   }
+// #ifdef NDEBUG
+//   Logger::SetLogLevel(LogLevel::WARN);
+// #else
+//   Logger::SetLogLevel(LogLevel::DEBUG);
+// #endif
+// }

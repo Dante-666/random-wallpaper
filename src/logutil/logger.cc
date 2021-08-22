@@ -7,7 +7,7 @@ LogLevel BaseLogger::_level = LogLevel::WARN;
 LogLevel BaseLogger::_level = LogLevel::DEBUG;
 #endif
 
-regex BaseLogger::re("\\s((\\w+::)?(\\w+))\\(.*\\)$");
+regex BaseLogger::re("\\s&?((\\w+::)?(\\w+))\\(.*\\)$");
 
 ostream &operator<<(ostream &stream, const LogLevel &level) {
   switch (level) {

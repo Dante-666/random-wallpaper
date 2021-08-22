@@ -37,7 +37,6 @@ class access_denied : std::exception {
 class UtilImpl {
 public:
   virtual ~UtilImpl(){};
-  virtual int systemCall(const string &command);
   virtual void updateWallpaper(const string &uri) = 0;
 };
 

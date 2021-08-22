@@ -1,10 +1,9 @@
 #include "logger.h"
 
-unique_ptr<LoggerImpl> Logger::_impl = make_unique<ConsoleLogger>();
 #ifdef NDEBUG
-LogLevel Logger::_level = LogLevel::WARN;
+LogLevel BaseLogger::_level = LogLevel::WARN;
 #else
-LogLevel Logger::_level = LogLevel::DEBUG;
+LogLevel BaseLogger::_level = LogLevel::DEBUG;
 #endif
 
 ostream &operator<<(ostream &stream, const LogLevel &level) {
@@ -25,33 +24,50 @@ ostream &operator<<(ostream &stream, const LogLevel &level) {
   return stream;
 }
 
-void Logger::log(const LogLevel &level, const string &message) {
+void BaseLogger::log(const LogLevel &level, const string &message,
+                     const string &function) {
   if (level >= _level) {
     stringstream _message;
-		//TODO: Disable C++20 for linux now since zoned_time isn't available
-#ifdef __linux__
-		auto time = system_clock::to_time_t(system_clock::now());
-		string str_time(std::ctime(&time));
+    // TODO: Disable C++20 for linux now since build machines
+    // doesn't have same compile flag
+#if defined __linux__ || __APPLE__
+    auto time = system_clock::to_time_t(system_clock::now());
+    string str_time(std::ctime(&time));
     _message << str_time.substr(0, str_time.length() - 1)
-#else
-    _message << zoned_time{current_zone(), floor<seconds>(system_clock::now())}
+#elif defined _WIN64 || _WIN32
+    _message << zoned_time {
+      current_zone(), floor<seconds>(system_clock::now())
+    }
 #endif
-             << level << ": " << message;
-    _impl->log(_message.str());
+             << level << ": ";
+    smatch ma;
+    regex re("\\s&?((\\w+::)?(\\w+))\\(.*\\)$");
+    if (regex_search(function, ma, re)) {
+      assert(ma.size() > 1);
+      _message << ma[1] << " -> ";
+    }
+    _message << message;
+    getInstance()->log(_message.str());
   }
 }
 
-void Logger::LogDebug(const string &message) {
-  Logger::log(LogLevel::DEBUG, message);
+const unique_ptr<LoggerImpl> &BaseLogger::getInstance() {
+  static unique_ptr<LoggerImpl> _impl = make_unique<ConsoleLogger>();
+  return _impl;
 }
-void Logger::LogInfo(const string &message) {
-  Logger::log(LogLevel::INFO, message);
+
+void BaseLogger::setLogLevel(const LogLevel &level) { _level = level; }
+void BaseLogger::logDebug(const string &message, const string &function) {
+  BaseLogger::log(LogLevel::DEBUG, message, function);
 }
-void Logger::LogWarn(const string &message) {
-  Logger::log(LogLevel::WARN, message);
+void BaseLogger::logInfo(const string &message, const string &function) {
+  BaseLogger::log(LogLevel::INFO, message, function);
 }
-void Logger::LogError(const string &message) {
-  Logger::log(LogLevel::ERROR, message);
+void BaseLogger::logWarn(const string &message, const string &function) {
+  BaseLogger::log(LogLevel::WARN, message, function);
+}
+void BaseLogger::logError(const string &message, const string &function) {
+  BaseLogger::log(LogLevel::ERROR, message, function);
 }
 
 void LoggerImpl::log(const string &message) {

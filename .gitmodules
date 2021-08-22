@@ -1,6 +1,8 @@
 [submodule "external/tinyxml"]
 	path = external/tinyxml
 	url = git://git.code.sf.net/p/tinyxml/git
+	ignore = dirty
 [submodule "external/curl"]
 	path = external/curl
 	url = git@github.com:curl/curl.git
+	ignore = dirty

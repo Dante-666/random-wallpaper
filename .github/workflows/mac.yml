@@ -1,6 +1,4 @@
-# This is a basic workflow to help you get started with Actions
-
-name: linux
+name: mac
 
 # Controls when the workflow will run
 on:
@@ -16,10 +14,9 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
-  linux-build:
+  mac-build:
     # The type of runner that the job will run on
-    runs-on: ubuntu-latest
-
+    runs-on: macos-11
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -34,24 +31,25 @@ jobs:
           key: ${{ runner.os }}
       - name: Setup premake
         uses: abel0b/setup-premake@8463d9a3b900273c6863825a886aaa3a129f7db6
-      - name: Setup libcurl
-        run: |
-            sudo apt-get update
-            sudo apt-get install libcurl4-openssl-dev
+      # - name: Setup libcurl
+      #   run: |
+      #       sudo apt-get update
+      #       sudo apt-get install libcurl4-openssl-dev
       - name: Install gtest
         if: steps.libcache.outputs.cache-hit != 'true'
-        uses: MarkusJx/googletest-installer@v1.1
+        run: |
+            brew install googletest
       - name: Cache artifacts
         if: steps.libcache.outputs.cache-hit != 'true'
         run: |
           sudo mkdir -p /opt/cache/gtest/lib
-          sudo cp -R /usr/include/gtest /opt/cache/gtest
-          sudo cp /usr/lib/libgtest* /opt/cache/gtest/lib
+          sudo cp -R /usr/local/include/gtest /opt/cache/gtest
+          sudo cp /usr/local/lib/libgtest* /opt/cache/gtest/lib
       - name: Restore cache
         if: steps.libcache.outputs.cache-hit == 'true'
         run: |
-          sudo cp -R /opt/cache/gtest/gtest /usr/include
-          sudo cp /opt/cache/gtest/lib/*.a /usr/lib
+          sudo cp -R /opt/cache/gtest/gtest /usr/local/include
+          sudo cp /opt/cache/gtest/lib/*.a /usr/local/lib/
       - name: Configure and build
         run: |
             premake5 gmake2 && cd build && make config=release -j

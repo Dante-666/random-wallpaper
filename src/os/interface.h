@@ -21,6 +21,7 @@ using std::vector;
 
 using std::filesystem::absolute;
 using std::filesystem::create_directories;
+using std::filesystem::create_directory;
 using std::filesystem::directory_options;
 using std::filesystem::exists;
 using std::filesystem::path;
@@ -28,16 +29,13 @@ using std::filesystem::recursive_directory_iterator;
 
 using std::regex;
 using std::regex_replace;
+using std::regex_search;
+using std::smatch;
 using std::regex_constants::format_first_only;
-
-class access_denied : std::exception {
-  virtual const char *what() const noexcept override;
-};
 
 class UtilImpl {
 public:
   virtual ~UtilImpl(){};
-  virtual int systemCall(const string &command);
   virtual void updateWallpaper(const string &uri) = 0;
   virtual const path getConfFile() = 0;
 };
@@ -61,10 +59,22 @@ class Linux : public UtilImpl {
   virtual void updateWallpaper(const string &uri) override;
   virtual const path getConfFile() override;
 };
-
+// TODO: May have to merge the methods into one and update helper
 class Windows : public UtilImpl {
   static const char *appDataLoc;
   virtual ~Windows() override;
   virtual void updateWallpaper(const string &uri) override;
   virtual const path getConfFile() override;
+
+public:
+  Windows();
+};
+
+class Mac : public UtilImpl {
+  static const char *tmpWorkDir;
+  virtual ~Mac() override;
+  virtual void updateWallpaper(const string &uri) override;
+
+public:
+  Mac();
 };

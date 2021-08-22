@@ -43,3 +43,6 @@ compile_commands.json
 # vscode
 .vscode/
 *.sln
+
+# macos
+.DS_Store

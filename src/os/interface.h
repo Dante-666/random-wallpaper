@@ -21,6 +21,7 @@ using std::vector;
 
 using std::filesystem::absolute;
 using std::filesystem::create_directories;
+using std::filesystem::create_directory;
 using std::filesystem::directory_options;
 using std::filesystem::exists;
 using std::filesystem::path;
@@ -63,9 +64,16 @@ class Windows : public UtilImpl {
   static const char *appDataLoc;
   virtual ~Windows() override;
   virtual void updateWallpaper(const string &uri) override;
+
+public:
+  Windows();
 };
 
 class Mac : public UtilImpl {
+  static const char *tmpWorkDir;
   virtual ~Mac() override;
   virtual void updateWallpaper(const string &uri) override;
+
+public:
+  Mac();
 };

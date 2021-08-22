@@ -1,13 +1,10 @@
 #include "logger.h"
 
-unique_ptr<LoggerImpl> BaseLogger::_impl = make_unique<ConsoleLogger>();
 #ifdef NDEBUG
 LogLevel BaseLogger::_level = LogLevel::WARN;
 #else
 LogLevel BaseLogger::_level = LogLevel::DEBUG;
 #endif
-
-regex BaseLogger::re("\\s&?((\\w+::)?(\\w+))\\(.*\\)$");
 
 ostream &operator<<(ostream &stream, const LogLevel &level) {
   switch (level) {
@@ -31,7 +28,7 @@ void BaseLogger::log(const LogLevel &level, const string &message,
                      const string &function) {
   if (level >= _level) {
     stringstream _message;
-    // TODO: Disable C++20 for linux now since build machines 
+    // TODO: Disable C++20 for linux now since build machines
     // doesn't have same compile flag
 #if defined __linux__ || __APPLE__
     auto time = system_clock::to_time_t(system_clock::now());
@@ -44,13 +41,19 @@ void BaseLogger::log(const LogLevel &level, const string &message,
 #endif
              << level << ": ";
     smatch ma;
+    regex re("\\s&?((\\w+::)?(\\w+))\\(.*\\)$");
     if (regex_search(function, ma, re)) {
       assert(ma.size() > 1);
       _message << ma[1] << " -> ";
     }
     _message << message;
-    _impl->log(_message.str());
+    getInstance()->log(_message.str());
   }
+}
+
+const unique_ptr<LoggerImpl> &BaseLogger::getInstance() {
+  static unique_ptr<LoggerImpl> _impl = make_unique<ConsoleLogger>();
+  return _impl;
 }
 
 void BaseLogger::setLogLevel(const LogLevel &level) { _level = level; }

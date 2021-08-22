@@ -4,6 +4,7 @@
 // TODO: make this readable from a config file and keep default values here
 const char *Windows::appDataLoc = getenv("appdata");
 const char *Linux::tmpWorkDir = "~/.local/share/rwall";
+const char *Mac::tmpWorkDir = "~/.local/share/rwall";
 
 // GCC
 #ifdef __linux__
@@ -24,6 +25,14 @@ void Linux::updateWallpaper(const string &uri) try {
 #if defined _WIN64 || defined _WIN32
 #include "WinUser.h"
 UtilImpl &OSUtils::_impl = *(new Windows());
+
+Windows::Windows() {
+  path tempFilePath(appDataLoc);
+  tempFilePath = tempFilePath / "rwall";
+  if (not exists(tempFilePath)) {
+    create_directory(tempFilePath);
+  }
+}
 
 Windows::~Windows(){};
 
@@ -53,12 +62,8 @@ void Windows::updateWallpaper(const string &uri) try {
     /* download the file first and let this script transcode the image */
     Logger::LogInfo("Initializing download...");
     path tempFilePath(appDataLoc);
-    // TODO: Directory creation at instantiation
-    tempFilePath = tempFilePath / "rwall";
-    if (not exists(tempFilePath)) {
-      create_directory(tempFilePath);
-    }
-    tempFilePath = tempFilePath / ("tmpDownload" + ext[0].str());
+
+    tempFilePath = tempFilePath / "rwall" / ("tmpDownload" + ext[0].str());
     Logger::LogDebug(tempFilePath.string() + ", " + uri);
 
     // TODO: handle and then claim file written
@@ -78,11 +83,25 @@ void Windows::updateWallpaper(const string &uri) try {
 #include "mac_impl.h"
 UtilImpl &OSUtils::_impl = *(new Mac());
 
+Mac::Mac() {
+  path tmpWorkDirPath(tmpWorkDir);
+  tmpWorkDirPath = OSUtils::replaceHome(tmpWorkDirPath);
+  if (not exists(tmpWorkDirPath)) {
+    create_directories(tmpWorkDirPath);
+  }
+}
+
 Mac::~Mac(){};
 
 void Mac::updateWallpaper(const string &uri) try {
   Logger::LogDebug("Calling AppKit method");
-  //setDesktopBackground(uri);
+  if (exists(uri)) {
+    /* File is present on dist */
+    setDesktopBackground(uri, tmpWorkDir, false);
+  } else {
+    /* WebURL */
+    setDesktopBackground(uri, tmpWorkDir);
+  }
 } catch (const std::exception &e) {
   Logger::LogError(e.what());
 }

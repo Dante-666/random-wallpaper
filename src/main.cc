@@ -1,3 +1,4 @@
+#include "logutil/logger.h"
 #include "container/container.h"
 #include "fetcher/cfetcher.h"
 #include "os/interface.h"

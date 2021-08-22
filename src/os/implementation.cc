@@ -37,10 +37,6 @@ Windows::Windows() {
 Windows::~Windows(){};
 
 void Windows::updateWallpaper(const string &uri) try {
-  using std::regex;
-  using std::regex_search;
-  using std::smatch;
-
   regex re("(.(jpg|png|jpeg)$)");
   smatch ext;
 
@@ -56,7 +52,7 @@ void Windows::updateWallpaper(const string &uri) try {
   };
 
   if (exists(uri)) {
-    /* File is present on dist */
+    /* File is present on disk */
     updateHelper(uri);
   } else if (regex_search(uri, ext, re)) {
     /* download the file first and let this script transcode the image */
@@ -94,13 +90,23 @@ Mac::Mac() {
 Mac::~Mac(){};
 
 void Mac::updateWallpaper(const string &uri) try {
-  Logger::LogDebug("Calling AppKit method");
+  regex re("(.(jpg|png|jpeg)$)");
+  smatch ext;
   if (exists(uri)) {
-    /* File is present on dist */
-    setDesktopBackground(uri, tmpWorkDir, false);
-  } else {
+    /* File is present on disk */
+    setDesktopBackground(uri);
+  } else if (regex_search(uri, ext, re)) {
     /* WebURL */
-    setDesktopBackground(uri, tmpWorkDir);
+    Logger::LogInfo("Initializing download...");
+    //TODO: avoid this all the time and do once in the constructor
+    path tempFilePath = OSUtils::replaceHome(tmpWorkDir);
+    tempFilePath = tempFilePath / ("tmpDownload" + ext[0].str());
+    Logger::LogDebug(tempFilePath.string() + ", " + uri);
+
+    // TODO: handle and then claim file written
+    CurlFetcher::writeImageToDisk(uri, tempFilePath.string());
+    Logger::LogInfo("File written...");
+    setDesktopBackground(tempFilePath);
   }
 } catch (const std::exception &e) {
   Logger::LogError(e.what());
@@ -143,6 +149,3 @@ vector<string> OSUtils::fetchFiles(const path &dir) try {
   return {};
 }
 
-const char *access_denied::what() const noexcept {
-  return "couldn't create/open file";
-}

@@ -29,11 +29,9 @@ using std::filesystem::recursive_directory_iterator;
 
 using std::regex;
 using std::regex_replace;
+using std::regex_search;
+using std::smatch;
 using std::regex_constants::format_first_only;
-
-class access_denied : std::exception {
-  virtual const char *what() const noexcept override;
-};
 
 class UtilImpl {
 public:
@@ -59,7 +57,7 @@ class Linux : public UtilImpl {
   virtual ~Linux() override;
   virtual void updateWallpaper(const string &uri) override;
 };
-
+// TODO: May have to merge the methods into one and update helper
 class Windows : public UtilImpl {
   static const char *appDataLoc;
   virtual ~Windows() override;

@@ -4,8 +4,12 @@
 
 using std::string;
 
-bool setDesktopBackground(const string& url, const char* tmpDir, const bool& isWebURL = true);
+void setDesktopBackground(const string &url);
 
-class url_error : std::exception {
+class mac_error : public std::exception {
+  string _errMsg;
   virtual const char *what() const noexcept override;
+
+public:
+  mac_error(const string &&errMsg) : _errMsg(errMsg){};
 };

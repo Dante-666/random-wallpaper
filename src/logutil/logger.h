@@ -55,11 +55,10 @@ public:
 // TODO: FileLogger later
 
 class BaseLogger {
-  static regex re;
-  static unique_ptr<LoggerImpl> _impl;
   static LogLevel _level;
   static void log(const LogLevel &level, const string &message,
                   const string &function);
+  static const unique_ptr<LoggerImpl> &getInstance();
 
 public:
   static void setLogLevel(const LogLevel &level);
@@ -78,9 +77,9 @@ using BaseLogger = BaseLogger;
 #define LogWarn(MSG) BaseLogger::logWarn(MSG, __PRETTY_FUNCTION__)
 #define LogError(MSG) BaseLogger::logError(MSG, __PRETTY_FUNCTION__)
 #elif defined _WIN64 || _WIN32
-#define LogDebug(MSG) BaseLogger::logDebug(MSG,  __FUNCSIG__)
-#define LogInfo(MSG) BaseLogger::logInfo(MSG,  __FUNCSIG__)
-#define LogWarn(MSG) BaseLogger::logWarn(MSG,  __FUNCSIG__)
-#define LogError(MSG) BaseLogger::logError(MSG,  __FUNCSIG__)
+#define LogDebug(MSG) BaseLogger::logDebug(MSG, __FUNCSIG__)
+#define LogInfo(MSG) BaseLogger::logInfo(MSG, __FUNCSIG__)
+#define LogWarn(MSG) BaseLogger::logWarn(MSG, __FUNCSIG__)
+#define LogError(MSG) BaseLogger::logError(MSG, __FUNCSIG__)
 #endif
 } // namespace Logger

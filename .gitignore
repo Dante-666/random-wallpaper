@@ -35,7 +35,6 @@
 build/
 Makefile
 compile_commands.json
-.clang-format
 
 # Completer
 .ccls-cache/
@@ -44,3 +43,6 @@ compile_commands.json
 # vscode
 .vscode/
 *.sln
+
+# macos
+.DS_Store

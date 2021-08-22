@@ -2,7 +2,7 @@
 
 #include <logutil/logger.h>
 
-#if not defined _WIN64 && _WIN32
+#if defined __linux__ || __APPLE__
 TEST(testLogger, consoleLogging) {
   string matchDebug =
       "[DEBUG] : testLogger_consoleLogging_Test::TestBody -> consoleDebug";

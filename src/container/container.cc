@@ -14,14 +14,14 @@ void Container::randomize() {
                 [&](const string &it) { _uriStore.insert(it); });
 }
 
-const string& Container::getURI() {
+const string &Container::getURI() {
   if (_uriStore.empty()) {
     throw std::out_of_range("container is empty!!!");
   }
-	std::call_once(_flag, [&](){_it = _uriStore.begin();});
-	if(_it == _uriStore.end()) {
-		_it = _uriStore.begin();
-	}
-	Logger::LogDebug(*_it);
-	return *(_it++);
+  std::call_once(_flag, [&]() { _it = _uriStore.begin(); });
+  if (_it == _uriStore.end()) {
+    _it = _uriStore.begin();
+  }
+  Logger::LogDebug(*_it);
+  return *(_it++);
 }

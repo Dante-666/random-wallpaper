@@ -28,3 +28,7 @@ ConfigParser::ConfigParser(const path &confFile) try {
 }
 
 ConfigParser::~ConfigParser() {}
+
+const char *access_denied::what() const noexcept {
+  return "unable to open file";
+}

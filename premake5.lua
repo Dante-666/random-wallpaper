@@ -4,7 +4,10 @@ workspace "random-wallpaper"
   location "build"
 	architecture "x64"
 
-	includedirs { "src", "external/tinyxml", "external/spirit/include" }
+	includedirs { "src", 
+								"external/tinyxml", 
+								"external/spirit/include", 
+								"external/config/include" }
 
 	filter "configurations:Debug"
 	  defines { "DEBUG" }

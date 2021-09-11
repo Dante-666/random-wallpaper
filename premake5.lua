@@ -63,7 +63,7 @@ workspace "random-wallpaper"
 	  links { "libcurl.lib", "wldap32.lib", "Crypt32.lib",
               "ws2_32.lib", "winmm.lib", "Normaliz.lib" }
 	  staticruntime "on"
-	  buildoptions { "-DCURL_STATICLIB"}
+	  buildoptions { "-DCURL_STATICLIB", "-DNOMINMAX"}
 	filter {}
 	-- link dynamically from system package manager
 	filter "system:linux or system:macosx"

@@ -120,6 +120,11 @@ void Mac::updateWallpaper(const string &uri) try {
 } catch (const std::exception &e) {
   Logger::LogError(e.what());
 }
+
+const path Mac::getConfFile() {
+	return OSUtils::replaceHome("~/rwall.conf");
+}
+
 #endif
 
 const path OSUtils::replaceHome(const path sPath) try {

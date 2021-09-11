@@ -74,6 +74,7 @@ class Mac : public UtilImpl {
   static const char *tmpWorkDir;
   virtual ~Mac() override;
   virtual void updateWallpaper(const string &uri) override;
+  virtual const path getConfFile() override;
 
 public:
   Mac();

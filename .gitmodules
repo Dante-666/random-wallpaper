@@ -20,93 +20,153 @@
 [submodule "external/mpl"]
 	path = external/mpl
 	url = https://github.com/boostorg/mpl.git
+	ignore = dirty
+	branch = boost-1.76.0
 [submodule "external/preprocessor"]
 	path = external/preprocessor
 	url = https://github.com/boostorg/preprocessor.git
+	ignore = dirty
+	branch = boost-1.76.0
 [submodule "external/fusion"]
 	path = external/fusion
 	url = https://github.com/boostorg/fusion.git
+	ignore = dirty
+	branch = boost-1.76.0
 [submodule "external/type_traits"]
 	path = external/type_traits
 	url = https://github.com/boostorg/type_traits.git
+	ignore = dirty
+	branch = boost-1.76.0
 [submodule "external/utility"]
 	path = external/utility
 	url = https://github.com/boostorg/utility.git
+	ignore = dirty
+	branch = boost-1.76.0
 [submodule "external/core"]
 	path = external/core
 	url = https://github.com/boostorg/core.git
+	ignore = dirty
+	branch = boost-1.76.0
 [submodule "external/static_assert"]
 	path = external/static_assert
 	url = https://github.com/boostorg/static_assert.git
+	ignore = dirty
+	branch = boost-1.76.0
 [submodule "external/phoenix"]
 	path = external/phoenix
 	url = https://github.com/boostorg/phoenix.git
+	ignore = dirty
+	branch = boost-1.76.0
 [submodule "external/predef"]
 	path = external/predef
 	url = https://github.com/boostorg/predef.git
+	ignore = dirty
+	branch = boost-1.76.0
 [submodule "external/proto"]
 	path = external/proto
 	url = https://github.com/boostorg/proto.git
+	ignore = dirty
+	branch = boost-1.76.0
 [submodule "external/bind"]
 	path = external/bind
 	url = https://github.com/boostorg/bind.git
+	ignore = dirty
+	branch = boost-1.76.0
 [submodule "external/typeof"]
 	path = external/typeof
 	url = https://github.com/boostorg/typeof.git
+	ignore = dirty
+	branch = boost-1.76.0
 [submodule "external/variant"]
 	path = external/variant
 	url = https://github.com/boostorg/variant.git
+	ignore = dirty
+	branch = boost-1.76.0
 [submodule "external/type_index"]
 	path = external/type_index
 	url = https://github.com/boostorg/type_index.git
+	ignore = dirty
+	branch = boost-1.76.0
 [submodule "external/container_hash"]
 	path = external/container_hash
 	url = https://github.com/boostorg/container_hash.git
+	ignore = dirty
+	branch = boost-1.76.0
 [submodule "external/throw_exception"]
 	path = external/throw_exception
 	url = https://github.com/boostorg/throw_exception.git
+	ignore = dirty
+	branch = boost-1.76.0
 [submodule "external/assert"]
 	path = external/assert
 	url = https://github.com/boostorg/assert.git
+	ignore = dirty
+	branch = boost-1.76.0
 [submodule "external/detail"]
 	path = external/detail
 	url = https://github.com/boostorg/detail.git
+	ignore = dirty
+	branch = boost-1.76.0
 [submodule "external/move"]
 	path = external/move
 	url = https://github.com/boostorg/move.git
+	ignore = dirty
+	branch = boost-1.76.0
 [submodule "external/integer"]
 	path = external/integer
 	url = https://github.com/boostorg/integer.git
+	ignore = dirty
+	branch = boost-1.76.0
 [submodule "external/foreach"]
 	path = external/foreach
 	url = https://github.com/boostorg/foreach.git
+	ignore = dirty
+	branch = boost-1.76.0
 [submodule "external/range"]
 	path = external/range
 	url = https://github.com/boostorg/range.git
+	ignore = dirty
+	branch = boost-1.76.0
 [submodule "external/iterator"]
 	path = external/iterator
 	url = https://github.com/boostorg/iterator.git
+	ignore = dirty
+	branch = boost-1.76.0
 [submodule "external/regex"]
 	path = external/regex
 	url = https://github.com/boostorg/regex.git
+	ignore = dirty
+	branch = boost-1.76.0
 [submodule "external/optional"]
 	path = external/optional
 	url = https://github.com/boostorg/optional.git
+	ignore = dirty
+	branch = boost-1.76.0
 [submodule "external/concept_check"]
 	path = external/concept_check
 	url = https://github.com/boostorg/concept_check.git
+	ignore = dirty
+	branch = boost-1.76.0
 [submodule "external/endian"]
 	path = external/endian
 	url = https://github.com/boostorg/endian.git
+	ignore = dirty
+	branch = boost-1.76.0
 [submodule "external/function"]
 	path = external/function
 	url = https://github.com/boostorg/function.git
+	ignore = dirty
+	branch = boost-1.76.0
 [submodule "external/function_types"]
 	path = external/function_types
 	url = https://github.com/boostorg/function_types.git
+	ignore = dirty
+	branch = boost-1.76.0
 [submodule "external/array"]
 	path = external/array
 	url = https://github.com/boostorg/array.git
 [submodule "external/smart_ptr"]
 	path = external/smart_ptr
 	url = https://github.com/boostorg/smart_ptr.git
+	ignore = dirty
+	branch = boost-1.76.0

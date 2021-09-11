@@ -17,3 +17,96 @@
 	url = https://github.com/boostorg/config.git
 	ignore = dirty
 	branch = boost-1.76.0
+[submodule "external/mpl"]
+	path = external/mpl
+	url = https://github.com/boostorg/mpl.git
+[submodule "external/preprocessor"]
+	path = external/preprocessor
+	url = https://github.com/boostorg/preprocessor.git
+[submodule "external/fusion"]
+	path = external/fusion
+	url = https://github.com/boostorg/fusion.git
+[submodule "external/type_traits"]
+	path = external/type_traits
+	url = https://github.com/boostorg/type_traits.git
+[submodule "external/utility"]
+	path = external/utility
+	url = https://github.com/boostorg/utility.git
+[submodule "external/core"]
+	path = external/core
+	url = https://github.com/boostorg/core.git
+[submodule "external/static_assert"]
+	path = external/static_assert
+	url = https://github.com/boostorg/static_assert.git
+[submodule "external/phoenix"]
+	path = external/phoenix
+	url = https://github.com/boostorg/phoenix.git
+[submodule "external/predef"]
+	path = external/predef
+	url = https://github.com/boostorg/predef.git
+[submodule "external/proto"]
+	path = external/proto
+	url = https://github.com/boostorg/proto.git
+[submodule "external/bind"]
+	path = external/bind
+	url = https://github.com/boostorg/bind.git
+[submodule "external/typeof"]
+	path = external/typeof
+	url = https://github.com/boostorg/typeof.git
+[submodule "external/variant"]
+	path = external/variant
+	url = https://github.com/boostorg/variant.git
+[submodule "external/type_index"]
+	path = external/type_index
+	url = https://github.com/boostorg/type_index.git
+[submodule "external/container_hash"]
+	path = external/container_hash
+	url = https://github.com/boostorg/container_hash.git
+[submodule "external/throw_exception"]
+	path = external/throw_exception
+	url = https://github.com/boostorg/throw_exception.git
+[submodule "external/assert"]
+	path = external/assert
+	url = https://github.com/boostorg/assert.git
+[submodule "external/detail"]
+	path = external/detail
+	url = https://github.com/boostorg/detail.git
+[submodule "external/move"]
+	path = external/move
+	url = https://github.com/boostorg/move.git
+[submodule "external/integer"]
+	path = external/integer
+	url = https://github.com/boostorg/integer.git
+[submodule "external/foreach"]
+	path = external/foreach
+	url = https://github.com/boostorg/foreach.git
+[submodule "external/range"]
+	path = external/range
+	url = https://github.com/boostorg/range.git
+[submodule "external/iterator"]
+	path = external/iterator
+	url = https://github.com/boostorg/iterator.git
+[submodule "external/regex"]
+	path = external/regex
+	url = https://github.com/boostorg/regex.git
+[submodule "external/optional"]
+	path = external/optional
+	url = https://github.com/boostorg/optional.git
+[submodule "external/concept_check"]
+	path = external/concept_check
+	url = https://github.com/boostorg/concept_check.git
+[submodule "external/endian"]
+	path = external/endian
+	url = https://github.com/boostorg/endian.git
+[submodule "external/function"]
+	path = external/function
+	url = https://github.com/boostorg/function.git
+[submodule "external/function_types"]
+	path = external/function_types
+	url = https://github.com/boostorg/function_types.git
+[submodule "external/array"]
+	path = external/array
+	url = https://github.com/boostorg/array.git
+[submodule "external/smart_ptr"]
+	path = external/smart_ptr
+	url = https://github.com/boostorg/smart_ptr.git

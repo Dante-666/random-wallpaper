@@ -31,10 +31,6 @@ jobs:
           key: ${{ runner.os }}
       - name: Setup premake
         uses: abel0b/setup-premake@8463d9a3b900273c6863825a886aaa3a129f7db6
-      # - name: Setup libcurl
-      #   run: |
-      #       sudo apt-get update
-      #       sudo apt-get install libcurl4-openssl-dev
       - name: Install gtest
         if: steps.libcache.outputs.cache-hit != 'true'
         run: |

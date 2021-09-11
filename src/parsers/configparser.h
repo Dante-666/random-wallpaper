@@ -3,7 +3,8 @@
 #include "logutil/logger.h"
 #include "os/interface.h"
 
-#include <boost/spirit/include/qi.hpp>
+#include "boost/spirit/include/qi.hpp"
+
 #include <string>
 
 namespace qi = boost::spirit::qi;

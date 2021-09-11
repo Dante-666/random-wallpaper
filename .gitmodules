@@ -6,3 +6,9 @@
 	path = external/curl
 	url = git@github.com:curl/curl.git
 	ignore = dirty
+	branch = curl-7_78_0
+[submodule "external/spirit"]
+	path = external/spirit
+	url = https://github.com/boostorg/spirit.git
+	ignore = dirty
+	branch = boost-1.76.0

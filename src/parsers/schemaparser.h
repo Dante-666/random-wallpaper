@@ -15,8 +15,8 @@ using std::stringstream;
 
 using std::vector;
 
-class Parser {
+class SchemaParser {
 public:
-  virtual ~Parser(){};
+  virtual ~SchemaParser(){};
   virtual vector<string> parseStream(const stringstream &stream) = 0;
 };

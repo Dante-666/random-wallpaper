@@ -37,6 +37,7 @@ class UtilImpl {
 public:
   virtual ~UtilImpl(){};
   virtual void updateWallpaper(const string &uri) = 0;
+  virtual const path getConfFile() = 0;
 };
 
 class OSUtils {
@@ -56,12 +57,14 @@ class Linux : public UtilImpl {
   static const char *tmpWorkDir;
   virtual ~Linux() override;
   virtual void updateWallpaper(const string &uri) override;
+  virtual const path getConfFile() override;
 };
 // TODO: May have to merge the methods into one and update helper
 class Windows : public UtilImpl {
   static const char *appDataLoc;
   virtual ~Windows() override;
   virtual void updateWallpaper(const string &uri) override;
+  virtual const path getConfFile() override;
 
 public:
   Windows();
@@ -71,6 +74,7 @@ class Mac : public UtilImpl {
   static const char *tmpWorkDir;
   virtual ~Mac() override;
   virtual void updateWallpaper(const string &uri) override;
+  virtual const path getConfFile() override;
 
 public:
   Mac();

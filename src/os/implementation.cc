@@ -7,7 +7,7 @@ const char *Linux::tmpWorkDir = "~/.local/share/rwall";
 const char *Mac::tmpWorkDir = "~/.local/share/rwall";
 
 // GCC
-#ifdef __linux__
+#if defined __linux__
 UtilImpl &OSUtils::_impl = *(new Linux());
 
 Linux::~Linux(){};
@@ -18,6 +18,10 @@ void Linux::updateWallpaper(const string &uri) try {
   std::system(command.str().c_str());
 } catch (const std::exception &e) {
   Logger::LogError(e.what());
+}
+
+const path Linux::getConfFile() {
+  return OSUtils::replaceHome("~/.config/rwall.conf");
 }
 #endif
 
@@ -72,6 +76,11 @@ void Windows::updateWallpaper(const string &uri) try {
 } catch (const std::exception &e) {
   Logger::LogError(e.what());
 }
+
+// TODO: fix a location for this
+const path Windows::getConfFile() {
+  return OSUtils::replaceHome("~/rwall.conf");
+}
 #endif
 
 // Clang
@@ -111,6 +120,11 @@ void Mac::updateWallpaper(const string &uri) try {
 } catch (const std::exception &e) {
   Logger::LogError(e.what());
 }
+
+const path Mac::getConfFile() {
+	return OSUtils::replaceHome("~/rwall.conf");
+}
+
 #endif
 
 const path OSUtils::replaceHome(const path sPath) try {
